@@ -1,0 +1,72 @@
+{% extends 'crm_profile/users-profile.html' %}
+
+{% block profile %}
+  <ul class="nav nav-tabs nav-tabs-bordered">
+    <li class="nav-item">
+      <button class="nav-link active px-1" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+    </li>
+  </ul>
+  <div class="tab-content pt-2">
+    {% if request.user.is_authenticated %}
+      <div class="tab-pane fade show active profile-overview" id="profile-overview">
+        <h5 class="card-title">About</h5>
+        <p class="small fst-italic">{{ staff_data.bio }}</p>
+        <h5 class="card-title">
+          Profile Details
+          <a href="{% url 'profileedit' staff_data.id %}">
+            <i class="bi bi-pencil-square" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+          </i></a>
+        </h5>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">Full Name</div>
+          <div class="col-lg-9 col-md-8">{{ staff_data.user_full_name }}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">Company</div>
+          <div class="col-lg-9 col-md-8">Chalo DMC</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">Job</div>
+          <div class="col-lg-9 col-md-8">{{ staff_data.job }}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">Country</div>
+          <div class="col-lg-9 col-md-8">India</div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">Phone</div>
+          <div class="col-lg-9 col-md-8">{{ staff_data.phone }}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">Email</div>
+          <div class="col-lg-9 col-md-8">{{ staff_data.email }}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">Address</div>
+          <div class="col-lg-9 col-md-8">{{ staff_data.address }}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">City</div>
+          <div class="col-lg-9 col-md-8">{{ staff_data.city }}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">State</div>
+          <div class="col-lg-9 col-md-8">{{ staff_data.state }}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 label">Pincode</div>
+          <div class="col-lg-9 col-md-8">{{ staff_data.pincode }}</div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="card p-2">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header alert alert-info text-center p-0">
+            <h1>Add Contact Form</h1>
+          </div>
+          <div class="card-body p-0">
+            <div class="responsive p-2" style="width: auto; height: 500px; overflow-y: scroll;">
+              {% block contactform %}
+
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header alert alert-info text-center p-0">
+            <h1>Contact Table</h1>
+          </div>
+          <div class="card-body p-0">
+            <div class="mb-3 px-2">
+              <form method="get" action="">
+                {% csrf_token %}
+                {% comment %} {{ search_form.as_p }} {% endcomment %}
+                <div class="row">
+                  <div class="col-md-5">
+                    <div class="input-group input-group-sm mb-3">
+                      <span class="input-group-text" id="inputGroup-sizing-sm">
+                        Enter Contact to Search
+                        <span class="input-group mx-3">{{ search_form.query }}</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-6 ">
+                    <div class="input-group input-group-sm ">
+                      <span class="input-group-text">Start & End Date
+                        <span class="input-group mx-3"> {{ search_form.start_date }}</span>
+                        <span class="input-group mx-3">{{ search_form.end_date }}</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                    <button type="submit">Search</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="table-responsive" style="width: auto; height: 400px;">
+              <table class="table table-success table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Person Name</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in contdata %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ item.person_name }}</td>
+                      <td>{{ item.company_name }}</td>
+                      <td>{{ item.person_phone }}</td>
+                      <td>
+                        <a class="btn btn-sm btn-warning" href="{% url 'editcontact' item.id %} ">Edit</a>
+                        <a class="btn btn-sm btn-danger" href="{% url 'deletecontact' item.id %} ">Delete</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer bg-transparent">
+            <div class="pagination">
+              <span class="step-links">
+                {% if contdata.has_previous %}
+                  <a href="?page=1" class="btn btn-sm btn-info">&laquo; First</a>
+                  <a href="?page={{ contdata.previous_page_number }}" class="btn btn-sm btn-info">Previous</a>
+                {% endif %}
+
+                <span class="current">Page {{ contdata.number }} of {{ contdata.paginator.num_pages }}.</span>
+
+                {% if contdata.has_next %}
+                  <a href="?page={{ contdata.next_page_number }}" class="btn btn-sm btn-info">Next</a>
+                  <a href="?page={{ contdata.paginator.num_pages }}" class="btn btn-sm btn-info">Last &raquo;</a>
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

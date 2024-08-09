@@ -1,0 +1,82 @@
+{% extends 'crm_base.html' %}
+{% load static %}
+
+{% block maincontant %}
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Company</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="breadcrumb-item"><a href="{% url 'allarrival' %}">Arrivals</a></li>
+          <li class="breadcrumb-item active">Arrivals Overview</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <img src="{{ company_data.avatar.url }}" alt="Profile" class="rounded-circle" />
+              <h2>{{ company_data.company_name }}</h2>
+              <h5>{{ company_data.person_name }}</h5>
+              <h5>{{ company_data.person_phone }}</h5>
+              <p class="p-0 m-0 text-center">{{ company_data.company_address }}
+                {{ company_data.company_city }} {{ company_data.company_state }}
+                {{ company_data.company_pincode }}</p>
+              <div class="social-links mt-2">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-8">
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Profile Edit Section -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+                <li class="nav-item p-0">
+                  <button class="nav-link active p-0 m-0" 
+                  data-bs-toggle="tab" 
+                  data-bs-target="#profile-overview">
+                  <a href="{% url 'allarrival' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Back" class="pe-3">
+                    <i class="bi bi-box-arrow-left"></i>
+                  </a>Edit Contacts</button>
+                </li>
+              </ul>
+              <div class="tab-pane fade show active profile-edit pt-3">
+                <!-- Profile Edit Form -->
+                <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  {% for fields in form %}           
+                    <div class="row mb-3">
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">{{ fields.label }}</label>
+                      <div class="col-md-8 col-lg-9">{{ fields }}</div>
+                    </div>
+                  {% endfor %}
+
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </form>
+                <!-- End Profile Edit Form -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- EndProfile Edit Section -->
+{% endblock %}

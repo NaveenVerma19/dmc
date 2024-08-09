@@ -1,0 +1,163 @@
+{% extends 'crm_base.html' %}
+{% load static %}
+
+{% block maincontant %}
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Company</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'allcontact' %}">Contacts Table</a>
+          </li>
+          {% if perms.crm.add_contacttable %}
+            <li class="breadcrumb-item">
+              <a href="{% url 'addcontact' %}">
+                <i class="bi bi-person-fill-add" style="font-size: 14px;"></i>
+                <span>Add Contact</span>
+              </a>
+            </li>
+          {% endif %}
+        </ol>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="card p-0">
+        <div class="card-body pt-1">
+          <div class="mb-3 px-2">
+            <form method="get" action="">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="input-group input-group-sm mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">
+                      Enter Contact to Search
+                      <span class="input-group mx-3">{{ search_form.query }}</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">
+                      Start & End Date
+                      <span class="input-group mx-3">{{ search_form.start_date }}</span>
+                      <span class="input-group mx-3">{{ search_form.end_date }}</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="submit">Search</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="table-responsive" style="width: auto; height: 450px;">
+            <table class="table table-success table-striped table-hover">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center px-2 m-0">#</th>
+                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Company Name</th>
+                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Contact Person</th>
+                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Designation</th>
+                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Phone</th>
+                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Email</th>
+                  <th scope="col" class="text-center px-2 m-0 text-nowrap">City</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in contact_data %}
+                  {% if request.user.is_staff %}
+                    <tr class="p-0 m-0">
+                      <td class="p-0 m-0 text-nowrap">
+                        <div class="dropdown p-0">
+                          <button class="btn bi bi-three-dots dropdown-toggle p-0 m-0" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                          <ul class="dropdown-menu m-0 p-0">
+                            <li>
+                              <a class="btn btn-sm btn-info p-0 m-0" href="{% url 'overviewcontact' item.id %}"><i class="bi bi-eye-fill p-0 m-0" style="font-size: 11px;"></i> View</a>
+                            </li>
+                            {% if perms.crm.change_arivaltable %}
+                              <li>
+                                <a class="btn btn-sm btn-warning p-0 m-0" href="{% url 'editcontact' item.id %}"><i class="bi bi-pencil-square" style="font-size: 11px;"></i>Edit</a>
+                              </li>
+                            {% endif %}
+                            {% if perms.crm.delete_arivaltable %}
+                              <li>
+                                <a class="btn btn-sm btn-danger p-0 m-0" href="{% url 'deletecontact' item.id %}"><i class="bi bi-trash-fill" style="font-size: 11px;"></i> Delete</a>
+                              </li>
+                            {% endif %}
+                          </ul>
+                        </div>
+                      </td>
+
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.company_name.company_name }}</td>
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_name }}</td>
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.contact_designation }}</td>
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_phone }}</td>
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_email }}</td>
+                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.contact_city }}</td>
+                    </tr>
+
+                    <!-- - For Creater Section Only -->
+                  {% elif item.creator == request.user %}
+                    <tr class="p-0 m-0">
+                      <td class="p-0 m-0 text-nowrap">
+                        <div class="dropdown p-0">
+                          <button class="btn bi bi-three-dots dropdown-toggle p-0 m-0" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                          <ul class="dropdown-menu m-0 p-0">
+                            <li>
+                              <a class="btn btn-sm btn-info p-0 m-0" href="{% url 'overviewcontact' item.id %}"><i class="bi bi-eye-fill p-0 m-0" style="font-size: 11px;"></i> View</a>
+                            </li>
+                            {% if perms.crm.change_arivaltable %}
+                              <li>
+                                <a class="btn btn-sm btn-warning p-0 m-0" href="{% url 'editcontact' item.id %}"><i class="bi bi-pencil-square" style="font-size: 11px;"></i>Edit</a>
+                              </li>
+                            {% endif %}
+                            {% if perms.crm.delete_arivaltable %}
+                              <li>
+                                <a class="btn btn-sm btn-danger p-0 m-0" href="{% url 'deletecontact' item.id %}"><i class="bi bi-trash-fill" style="font-size: 11px;"></i> Delete</a>
+                              </li>
+                            {% endif %}
+                          </ul>
+                        </div>
+                      </td>
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.company_name.company_name }}</td>
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_name }}</td>
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.contact_designation }}</td>
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_phone }}</td>
+                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_email }}</td>
+                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.contact_city }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer bg-transparent">
+            <div class="pagination">
+              <span class="step-links">
+                {% if contact_data.has_previous %}
+                  <a href="?page=1" class="btn btn-sm btn-info">&laquo; First</a>
+                  <a href="?page={{ contact_data.previous_page_number }}" class="btn btn-sm btn-info">Previous</a>
+                {% endif %}
+
+                <span class="current">Page {{ contact_data.number }} of {{ contact_data.paginator.num_pages }}.</span>
+
+                {% if contact_data.has_next %}
+                  <a href="?page={{ contact_data.next_page_number }}" class="btn btn-sm btn-info">Next</a>
+                  <a href="?page={{ contact_data.paginator.num_pages }}" class="btn btn-sm btn-info">Last &raquo;</a>
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- End #main -->
+{% endblock %}

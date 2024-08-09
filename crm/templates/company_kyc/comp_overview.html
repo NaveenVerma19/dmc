@@ -1,0 +1,156 @@
+{% extends 'crm_base.html' %}
+{% load static %}
+
+{% block maincontant %}
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Company</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="breadcrumb-item"><a href="{% url 'allcompanykyc' %}">Compnay</a></li>
+          <li class="breadcrumb-item active">Company Profile</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <img src="{{ company_data.gstin_file.url }}" alt="Profile" class="rounded-circle" />
+              <h2>{{ company_data.company_kyc }}</h2>
+              <h5>{{ company_data.company_branch }}</h5>
+              <p class="p-0 m-0 text-center fst-italic" style="font-size: 12px;">{{ company_data.company_reg_address }}
+                {{ company_data.company_city }} {{ company_data.company_state }}
+                {{ company_data.company_pincode }}</p>
+              <div class="social-links mt-2">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-8">
+          <div class="card">
+            <div class="card-body pt-3">
+              <ul class="nav nav-tabs nav-tabs-bordered">
+                <li class="nav-item">
+                  <button class="nav-link active px-1"><a href="{% url 'allcompanykyc' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Back" class="pe-3"><i class="bi bi-box-arrow-left"></i></a>Company Profile</button>
+                </li>
+              </ul>
+              <div class="tab-content pt-2">
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <h5 class="card-title">About</h5>
+                  <p class="small fst-italic">{{ company_data.company_kyc }} is
+                    {{ company_data.Constitution }} compnay, his
+                    {{ company_data.company_branch }} branch is
+                    {{ company_data.office_role }}</p>
+                  <h5 class="card-title">
+                    Profile Details{% if perms.crm.change_companykycdetails %}
+                      <a href="{% url 'editcompanykyc' company_data.id %}"><i class="bi bi-pencil-square" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
+                    {% endif %}
+                  </h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Company Name</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.company_kyc }}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Company Branch</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.company_branch }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Address</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.company_reg_address }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">City</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.company_city }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">State</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.company_state }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Pincode</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.company_pincode }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Country</div>
+                    <div class="col-lg-9 col-md-8">India</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">GSTIN</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.gstin }}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">GSTIN File</div>
+                    <div class="col-lg-9 col-md-8">
+                      <img src="{{ company_data.gstin_file.url }} " alt="" style="height: 30px; width: 30px;" />
+                      <a href="{{ company_data.gstin_file.url }}" target="_blank">Click to view</a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Pan Card</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.pancard_no }}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Pan File</div>
+                    <div class="col-lg-9 col-md-8">
+                      <img src="{{ company_data.pancard_file.url }} " alt="" style="height: 30px; width: 30px;" />
+                      <a href="{{ company_data.pancard_file.url }}" target="_blank">Click to view</a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">MSME</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.msme_no }}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">msme_no File</div>
+                    <div class="col-lg-9 col-md-8">
+                      <img src="{{ company_data.msme_file.url }} " alt="" style="height: 30px; width: 30px;" />
+                      <a href="{{ company_data.msme_file.url }}" target="_blank">Click to view</a>
+                    </div>
+                  </div>
+                  {% comment %} <div class="row">
+                    <div class="col-lg-3 col-md-4 label">GSTIN</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.gstin }}</div>
+                  </div> {% endcomment %}
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Company Landline</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.company_landline }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Company Email</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.company_email }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Affilation</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.company_Affiliations }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}

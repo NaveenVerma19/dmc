@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="card p-2">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header alert alert-info text-center p-0">
+            <h1>Add Arival Form</h1>
+          </div>
+          <div class="card-body p-0">
+            <div class="responsive p-2" style="width: auto; height: 500px; overflow-y: scroll;">
+              {% block arivalform %}
+
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header alert alert-info text-center p-0">
+            <h1>Arival Table</h1>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive" style="width: auto; height: 460px;">
+              <table class="table table-success table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">File Ref.</th>
+                    <th scope="col">Agency Name</th>
+                    <th scope="col">Staff Name</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in arivaldata %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ item.file_Ref }}</td>
+                      <td>{{ item.agency_name }}</td>
+                      <td>{{ item.staff }}</td>
+                      <td>
+                        <a class="btn btn-sm btn-warning" href="{% url 'editarival' item.id %} ">Edit</a>
+                        <a class="btn btn-sm btn-danger" href="{% url 'deleteArival' item.id %} ">Delete</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer bg-transparent">
+            <div class="pagination">
+              <span class="step-links">
+                {% if arivaldata.has_previous %}
+                  <a href="?page=1" class="btn btn-sm btn-info">&laquo; First</a>
+                  <a href="?page={{ arivaldata.previous_page_number }}" class="btn btn-sm btn-info">Previous</a>
+                {% endif %}
+
+                <span class="current">Page {{ arivaldata.number }} of {{ arivaldata.paginator.num_pages }}.</span>
+
+                {% if arivaldata.has_next %}
+                  <a href="?page={{ arivaldata.next_page_number }}" class="btn btn-sm btn-info">Next</a>
+                  <a href="?page={{ arivaldata.paginator.num_pages }}" class="btn btn-sm btn-info">Last &raquo;</a>
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

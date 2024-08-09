@@ -1,0 +1,57 @@
+{% extends 'baseaccounts.html' %}
+{% load static %}
+{% block credentialspage %}
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Profile</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#">Home</a>
+          </li>
+          <li class="breadcrumb-item">User</li>
+          <li class="breadcrumb-item active">Profile Creation</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-body pt-2">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered p-0">
+                <li class="nav-item p-0">
+                  <button class="nav-link active p-0 m-0"><a href="{% url 'logoutuser' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Logout" class="pe-2"><i class="bi bi-box-arrow-left" style="font-size: 24px;"></i></a>New Contacts</button>
+                </li>
+              </ul>
+              <div class="tab-pane fade show active profile-edit pt-3" id="profile-edit">
+                <!-- Profile Edit Form -->
+                <form method="POST"  enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  {% for fields in form %}
+                    {% if forloop.counter > 0 %}
+                      <div class="row mb-3">
+                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">{{ fields.label }}</label>
+                        <div class="col-md-8 col-lg-9">{{ fields }}</div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Add Profile</button>
+                  </div>
+                </form>
+                <!-- End Profile Edit Form -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- End #main -->
+{% endblock %}

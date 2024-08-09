@@ -1,0 +1,37 @@
+<!-- ======= Header ======= -->
+<!-- ======= logo ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+  {% include "header/logo.html" %}
+  <!-- End Logo -->
+
+  <!-- ======= search ======= -->
+  {% include "header/search.html" %}
+  <!-- End Search Bar -->
+
+  <!-- ======= notification Messages and User Profiles ======= -->
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+      <li class="nav-item d-block d-lg-none">
+        <a class="nav-link nav-icon search-bar-toggle" href="#">
+          <i class="bi bi-search"></i>
+        </a>
+      </li>
+      <!-- End Search Icon-->
+
+      <!-- ======= notification ====== -->
+
+      {% include "header/notification.html" %}
+      <!-- End Notification Nav -->
+
+      <!-- ======= Messages ====== -->
+      {% include "header/messages.html" %}
+      <!-- End Messages Nav -->
+
+      <!-- ======= Profile ====== -->
+      {% include "header/profile-nav.html" %}
+      <!-- End Profile Nav -->
+    </ul>
+  </nav>
+  <!-- End Icons Navigation -->
+</header>
+<!-- End Header -->
