@@ -21,9 +21,9 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactTable
         fields = '__all__'
-        exclude = ['creator', 'editor']
+        exclude = ['creator', 'editor', 'company_name']
         widgets = {
-            'company_name': forms.Select(attrs={"class": "form-control"}),
+            # 'company_name': forms.Select(attrs={"class": "form-control"}),
             'person_name': forms.TextInput(attrs={"class": "form-control"}),
             'person_phone': forms.TextInput(attrs={"class": "form-control"}),
             'person_email': forms.EmailInput(attrs={"class": "form-control"}),
@@ -188,7 +188,7 @@ class StaffDetailsForm(forms.ModelForm):
             'phone': 'Phone',
             'job': 'Designation',
             'bio': 'About',
-            'address': ' Address',
+            'address': 'Address',
             'city': 'City',
             'state': 'State',
             'pincode': 'Pincode',

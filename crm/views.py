@@ -253,18 +253,22 @@ def deletecompanykyc(request, pk):
 def addcontact(request):
     statf_data = StaffDetails.objects.get(username=request.user)
     form = ContactForm()
-    # companies = CompanyFullKYC.objects.all()
+    companies = CompanyFullKYC.objects.all()
     if request.method == 'POST':
+        comp_reg = request.POST.get('company_name')
+        company, created = CompanyFullKYC.objects.get_or_create(
+            company_name=comp_reg)
         form = ContactForm(request.POST, request.FILES)
         if form.is_valid():
             comp_kyc_data = form.save(commit=False)
             comp_kyc_data.creator = request.user
+            comp_kyc_data.company_name = company
             form.save()
             return redirect('allcontact')
-
     context = {
         'form': form,
         'staff_data': statf_data,
+        'companies': companies,
     }
     return render(request, 'contacts/contact_add.html', context)
 
@@ -273,12 +277,17 @@ def addcontact(request):
 def editcontact(request, pk):
     statf_data = StaffDetails.objects.get(username=request.user)
     contact_data = ContactTable.objects.get(id=pk)
+    companies = CompanyFullKYC.objects.all()
     if request.method == "POST":
+        comp_reg = request.POST.get('company_name')
+        company, created = CompanyFullKYC.objects.get_or_create(
+            company_name=comp_reg)
         # Process the form submission with the existing company instance
         form = ContactForm(request.POST, request.FILES, instance=contact_data)
         if form.is_valid():
             comp_kyc_edit = form.save(commit=False)
             comp_kyc_edit.editor = request.user
+            comp_kyc_edit.company_name = company
             form.save()  # Save the updated instance
             return redirect('allcontact')
         # else:
@@ -289,14 +298,15 @@ def editcontact(request, pk):
     context = {
         'form': form,
         'staff_data': statf_data,
-        'contact_data': contact_data
+        'contact_data': contact_data,
+        'companies': companies,
     }
     return render(request, 'contacts/contact_edit.html', context)
 
 
 @login_required(login_url='loginpage')
 def allcontact(request):
-    statf_data = StaffDetails.objects.get(username=request.user)    
+    statf_data = StaffDetails.objects.get(username=request.user)
     queryset = ContactTable.objects.all()
     search_form = SearchForm(request.GET or None)
     if search_form.is_valid():
@@ -395,7 +405,7 @@ def editarrival(request, pk):
 @login_required(login_url='loginpage')
 def allarrival(request):
     statf_data = StaffDetails.objects.get(username=request.user)
-    # arrival_data = 
+    # arrival_data =
     queryset = ArivalTable.objects.all()
     search_form = SearchForm(request.GET or None)
     if search_form.is_valid():
@@ -473,7 +483,8 @@ def editfeedback(request, pk):
     feedback_data = Feedback.objects.get(id=pk)
     if request.method == "POST":
         # Process the form submission with the existing company instance
-        form = FeedbackForm(request.POST, request.FILES, instance=feedback_data)
+        form = FeedbackForm(request.POST, request.FILES,
+                            instance=feedback_data)
         if form.is_valid():
             comp_kyc_edit = form.save(commit=False)
             comp_kyc_edit.editor = request.user
@@ -492,7 +503,7 @@ def editfeedback(request, pk):
 
 @login_required(login_url='loginpage')
 def allfeedback(request):
-    statf_data = StaffDetails.objects.get(username=request.user)    
+    statf_data = StaffDetails.objects.get(username=request.user)
     queryset = Feedback.objects.all()
     search_form = SearchForm(request.GET or None)
     if search_form.is_valid():
@@ -503,7 +514,7 @@ def allfeedback(request):
             queryset = queryset.filter(
                 Q(creator__username__icontains=query) |
                 Q(suggestion_title__icontains=query) |
-                Q(description__icontains=query) 
+                Q(description__icontains=query)
             )
         if start_date and end_date:
             queryset = queryset.filter(
@@ -539,11 +550,6 @@ def deletefeedback(request, pk):
     return redirect('allfeedback')
 
 # End Feedbac Details Functions
-
-
-
-
-
 
 
 # Charts Section
