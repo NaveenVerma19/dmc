@@ -2,8 +2,8 @@
 
 <!-- ======= Profile ====== -->
 {% if request.user.is_authenticated %}
-  <li class="nav-item dropdown pe-3">
-    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+  <li class="nav-item dropdown pe-0">
+    <a class="nav-link nav-profile d-flex align-items-center px-5" href="#" data-bs-toggle="dropdown">
       <img src="{{ staff_data.avatar.url }} " alt="Profile" class="rounded-circle" />
       <span class="d-none d-md-block dropdown-toggle ps-2">{{ staff_data.username }}</span>
     </a>

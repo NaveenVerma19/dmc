@@ -84,6 +84,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'HOST': '51.158.61.113',
+#         'PORT': '3306',
+#         'USER': 'chalodmc2022_crmaj',
+#         'PASSWORD': 'chalodmc2022_crmaj',
+#         'NAME': 'chalodmc2022_crmaj',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -134,7 +144,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-
 
 
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
