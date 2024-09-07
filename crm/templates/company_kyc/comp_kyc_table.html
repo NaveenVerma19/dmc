@@ -10,8 +10,8 @@
           <li class="breadcrumb-item">
             <a href="{% url 'home' %}">Home</a>
           </li>
-          <li class="breadcrumb-item"><a href="{% url 'allcompanykyc' %}">Compnay</a></li></li>
-          <li class="breadcrumb-item active">Full KYC Companies</li>
+          <li class="breadcrumb-item"><a href="{% url 'allcontact' %}">New Registered Companies</a></li></li>
+          {% comment %} <li class="breadcrumb-item active">Full KYC Companies</li> {% endcomment %}
           {% if perms.crm.add_companykycdetails %}
           <li class="breadcrumb-item">
             <a href="{% url 'addcompanykyc' %}">
@@ -23,7 +23,7 @@
           <li class="breadcrumb-item">
             <a href="{% url 'addcontact' %}">
               <i class="bi bi-person-fill-add" style="font-size: 14px;"></i>
-              <span>Add Contact</span>
+              <span>Register New Company</span>
             </a>
           </li>
           {% endif %}
@@ -114,7 +114,8 @@
 
                       {% if item.pancard_file %}
                         <td class="p-1 m-0" style="font-size: 12px;">
-                          <img src="{{ item.pancard_file.url }}" style="height:30px; width: 30px;" />
+                          <img src="{{ item.pancard_file.url }}" style="height:20px; width: 20px;" />
+                          <a href="{{ item.pancard_file.url }}" target="_blank">PAN</a>
                         </td>
                       {% else %}
                         <td class="p-1 m-0" style="font-size: 12px;">Null</td>
@@ -124,7 +125,8 @@
 
                       {% if item.gstin_file %}
                         <td class="p-1 m-0" style="font-size: 12px;">
-                          <img src="{{ item.gstin_file.url }}" style="height:30px; width: 30px;" />
+                          <img src="{{ item.gstin_file.url }}" style="height:20px; width: 20px;" />
+                          <a href="{{  item.gstin_file.url }}" target="_blank">GSTIN</a>
                         </td>
                       {% else %}
                         <td class="p-1 m-0" style="font-size: 12px;">Null</td>
@@ -134,7 +136,8 @@
 
                       {% if item.msme_file %}
                         <td class="p-1 m-0" style="font-size: 12px;">
-                          <img src="{{ item.msme_file.url }}" style="height:30px; width: 30px;" />
+                          <img src="{{ item.msme_file.url }}" style="height:20px; width: 20px;" />
+                          <a href="{{  item.msme_file.url }}" target="_blank">MSME</a>
                         </td>
                       {% else %}
                         <td class="p-1 m-0" style="font-size: 12px;">Null</td>
@@ -180,7 +183,8 @@
 
                       {% if item.pancard_file %}
                         <td class="p-1 m-0" style="font-size: 12px;">
-                          <img src="{{ item.pancard_file.url }}" style="height:10px; width: 10px;" />
+                          <img src="{{ item.pancard_file.url }}" style="height:20px; width: 20px;" />
+                          <a href="{{ item.pancard_file.url }}" target="_blank">PAN</a>
                         </td>
                       {% else %}
                         <td class="p-1 m-0" style="font-size: 12px;">Null</td>
@@ -190,7 +194,8 @@
 
                       {% if item.gstin_file %}
                         <td class="p-1 m-0" style="font-size: 12px;">
-                          <img src="{{ item.gstin_file.url }}" style="height:10px; width: 10px;" />
+                          <img src="{{ item.gstin_file.url }}" style="height:20px; width: 20px;" />
+                          <a href="{{ item.gstin_file.url }}" target="_blank">GSTIN</a>
                         </td>
                       {% else %}
                         <td class="p-1 m-0" style="font-size: 12px;">Null</td>
@@ -200,7 +205,8 @@
 
                       {% if item.msme_file %}
                         <td class="p-1 m-0" style="font-size: 12px;">
-                          <img src="{{ item.msme_file.url }}" style="height:10px; width: 10px;" />
+                          <img src="{{ item.msme_file.url }}" style="height:20px; width: 20px;" />
+                          <a href="{{ item.msme_file.url }}" target="_blank">MSME</a>
                         </td>
                       {% else %}
                         <td class="p-1 m-0" style="font-size: 12px;">Null</td>

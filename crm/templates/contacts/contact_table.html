@@ -6,7 +6,7 @@
     <div class="pagetitle">
       <h1>Company</h1>
       <nav>
-        <ol class="breadcrumb">
+        {% comment %} <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="{% url 'home' %}">Home</a>
           </li>
@@ -18,6 +18,28 @@
               <a href="{% url 'addcontact' %}">
                 <i class="bi bi-person-fill-add" style="font-size: 14px;"></i>
                 <span>Add Contact</span>
+              </a>
+            </li>
+          {% endif %}
+        </ol> {% endcomment %}
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'allcompanykyc' %}">KYC Completed Companies</a>
+          </li>
+          {% comment %} <li class="breadcrumb-item active">Full KYC Companies</li> {% endcomment %}
+          {% if perms.crm.add_companykycdetails %}
+            <li class="breadcrumb-item">
+              <a href="{% url 'addcompanykyc' %}"><i class="bi bi-file-earmark-plus-fill" style="font-size: 14px;"></i><span>Add KYC</span></a>
+            </li>
+          {% endif %}
+          {% if perms.crm.add_contacttable %}
+            <li class="breadcrumb-item">
+              <a href="{% url 'addcontact' %}">
+                <i class="bi bi-person-fill-add" style="font-size: 14px;"></i>
+                <span>Register New Company</span>
               </a>
             </li>
           {% endif %}

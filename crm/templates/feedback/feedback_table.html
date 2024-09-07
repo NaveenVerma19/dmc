@@ -31,25 +31,21 @@
             <form method="get" action="">
               {% csrf_token %}
               <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-5 col-sm-12">
                   <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">
-                      Enter Contact to Search
-                      <span class="input-group mx-3">{{ search_form.query }}</span>
-                    </span>
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Enter Contact to Search</span>
+                    <input type="text" name="query" class="form-control" placeholder="Search" value="{{ search_form.query.value }}" />
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12 mb-3">
                   <div class="input-group input-group-sm">
-                    <span class="input-group-text">
-                      Start & End Date
-                      <span class="input-group mx-3">{{ search_form.start_date }}</span>
-                      <span class="input-group mx-3">{{ search_form.end_date }}</span>
-                    </span>
+                    <span class="input-group-text">Start & End Date</span>
+                    <input type="date" name="start_date" class="form-control" value="{{ search_form.start_date.value }}" />
+                    <input type="date" name="end_date" class="form-control" value="{{ search_form.end_date.value }}" />
                   </div>
                 </div>
-                <div class="col-md-1">
-                  <button type="submit">Search</button>
+                <div class="col-md-1 col-sm-12 mb-3">
+                  <button type="submit" class="btn btn-primary btn-sm">Search</button>
                 </div>
               </div>
             </form>
@@ -90,7 +86,10 @@
                       <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">{{ item.creator }}</td>
                       <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">{{ item.suggestion_title }}</td>
                       <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">{{ item.description }}</td>
-                      <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">{{ item.files.url }}</td>
+                      <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">
+                        <img src="{{ item.suport_file.url }}" alt="Suporting files" style="height: 20px; width: 20px;" />
+                        <a href="{{ item.suport_file.url }}" target="_blank">Link</a>
+                      </td>
                     </tr>
 
                     <!-- - For Creater Section Only -->
@@ -116,7 +115,10 @@
                       <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">{{ item.creator }}</td>
                       <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">{{ item.suggestion_title }}</td>
                       <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">{{ item.description }}</td>
-                      <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">{{ item.files.url }}</td>
+                      <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">
+                        <img src="{{ item.suport_file.url }}" alt="Suporting files" style="height: 20px; width: 20px;" />
+                        <a href="{{ item.suport_file.url }}" target="_blank">Link</a>
+                      </td>
                     </tr>
                   {% endif %}
                 {% endfor %}

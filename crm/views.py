@@ -496,7 +496,7 @@ def editfeedback(request, pk):
     context = {
         'form': form,
         'staff_data': statf_data,
-        'contact_data': feedback_data
+        'feedback_data': feedback_data
     }
     return render(request, 'feedback/feedback_edit.html', context)
 
