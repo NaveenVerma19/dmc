@@ -100,7 +100,8 @@ def newcompanyedit(request, pk):
 @login_required(login_url='loginpage')
 def allnewcompany(request):
     statf_data = StaffDetails.objects.get(username=request.user)
-    queryset = NewCompanyRegistration.objects.all()
+    # queryset = NewCompanyRegistration.objects.all()
+    queryset = CompanyFullKYC.objects.all()
     search_form = SearchForm(request.GET or None)
     if search_form.is_valid():
         query = search_form.cleaned_data.get('query')
@@ -154,6 +155,13 @@ def addcompanykyc(request):
     form = CompanyKYCForm()
     # companies = CompanyFullKYC.objects.all()
     if request.method == 'POST':
+        company_kyc = request.POST.get('company_kyc')
+        kyc_val = CompanyFullKYC.objects.get(id=company_kyc)
+        print(kyc_val.kyc_status)
+        if kyc_val.kyc_status == False: # Check that what value is set there if false the set true neither do nothing
+            kyc_val.kyc_status = True # now set value True
+            kyc_val.save() # save the instance
+        print(kyc_val.kyc_status)
         form = CompanyKYCForm(request.POST, request.FILES)
         if form.is_valid():
             comp_kyc_data = form.save(commit=False)

@@ -10,8 +10,8 @@
           <li class="breadcrumb-item">
             <a href="{% url 'home' %}">Home</a>
           </li>
-          <li class="breadcrumb-item"><a href="{% url 'allcontact' %}">New Registered Companies</a></li></li>
-          {% comment %} <li class="breadcrumb-item active">Full KYC Companies</li> {% endcomment %}
+          <li class="breadcrumb-item"><a href="{% url 'newcomp' %}">New Registered Companies</a></li>
+          <li class="breadcrumb-item active">KYC Completed Companies</li>
           {% if perms.crm.add_companykycdetails %}
           <li class="breadcrumb-item">
             <a href="{% url 'addcompanykyc' %}">
@@ -19,6 +19,7 @@
               </i><span>Add KYC</span></a>
           </li>
           {% endif %}
+          <li class="breadcrumb-item"><a href="{% url 'allcontact' %}">All Contact</a></li>
           {% if perms.crm.add_contacttable %}
           <li class="breadcrumb-item">
             <a href="{% url 'addcontact' %}">

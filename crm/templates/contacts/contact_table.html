@@ -26,15 +26,17 @@
           <li class="breadcrumb-item">
             <a href="{% url 'home' %}">Home</a>
           </li>
+          <li class="breadcrumb-item"><a href="{% url 'newcomp' %}">New Registered Companies</a></li>
           <li class="breadcrumb-item">
             <a href="{% url 'allcompanykyc' %}">KYC Completed Companies</a>
           </li>
-          {% comment %} <li class="breadcrumb-item active">Full KYC Companies</li> {% endcomment %}
+          
           {% if perms.crm.add_companykycdetails %}
             <li class="breadcrumb-item">
               <a href="{% url 'addcompanykyc' %}"><i class="bi bi-file-earmark-plus-fill" style="font-size: 14px;"></i><span>Add KYC</span></a>
             </li>
           {% endif %}
+          <li class="breadcrumb-item active">All Contacts</li>
           {% if perms.crm.add_contacttable %}
             <li class="breadcrumb-item">
               <a href="{% url 'addcontact' %}">

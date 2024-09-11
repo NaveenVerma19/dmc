@@ -44,6 +44,7 @@ class StaffDetails(models.Model):
 
 class CompanyFullKYC(models.Model):
     company_name = models.CharField(max_length=200)
+    kyc_status = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -53,6 +54,7 @@ class CompanyFullKYC(models.Model):
     def __str__(self):
         return self.company_name
 
+# Currently this Table is not in use
 class NewCompanyRegistration(models.Model):
     creator = models.ForeignKey(User, related_name='newcreator',on_delete=models.SET_NULL, null=True, blank=True)
     updater = models.ForeignKey(User, related_name="updater", on_delete=models.SET_NULL, null=True, blank=True)
@@ -287,7 +289,7 @@ class ArivalTable(models.Model):
     ground_partner_file_ref = models.CharField(
         max_length=100, blank=True, null=True)
     agency_name = models.ForeignKey(
-        CompanyFullKYC, on_delete=models.DO_NOTHING, null=True)
+        CompanyKYCDetails, on_delete=models.DO_NOTHING, null=True)
     lead_pax_name = models.CharField(max_length=100, blank=True, null=True)
     lead_pax_number = models.CharField(max_length=100, blank=True, null=True)
     adt_pax = models.CharField(max_length=100, blank=True, null=True)
@@ -300,6 +302,7 @@ class ArivalTable(models.Model):
     inv_date = models.DateField(null=True, blank=True)
     currency = models.ForeignKey(
         Currency, on_delete=models.DO_NOTHING, null=True)
+    currency_rate = models.CharField(max_length=10)
     inv_amount = models.CharField(max_length=100, null=True)
     payment_status = models.ForeignKey(
         PaymentStatus, models.DO_NOTHING, blank=True, null=True)

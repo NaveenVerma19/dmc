@@ -10,14 +10,32 @@
           <li class="breadcrumb-item">
             <a href="{% url 'home' %}">Home</a>
           </li>
-          <li class="breadcrumb-item">
-            <a href="{% url 'newcomp' %}">All New Registered Companies</a>
+          <li class="breadcrumb-item active">
+            <a href="{% url 'newcomp' %}">New Registered Companies</a>
           </li>
-          {% if perms.crm.add_newcompanyregistration %}
+          <li class="breadcrumb-item">
+            <a href="{% url 'allcompanykyc' %}">KYC Completed Companies</a>
+          </li>          
+          {% if perms.crm.add_companykycdetails %}
+            <li class="breadcrumb-item">
+              <a href="{% url 'addcompanykyc' %}"><i class="bi bi-file-earmark-plus-fill" style="font-size: 14px;"></i><span>Add KYC</span></a>
+            </li>
+          {% endif %}
+          <li class="breadcrumb-item"><a href="{% url 'allcontact' %}">All Contact</a></li>
+          {% if perms.crm.add_contacttable %}
+            <li class="breadcrumb-item">
+              <a href="{% url 'addcontact' %}">
+                <i class="bi bi-person-fill-add" style="font-size: 14px;"></i>
+                <span>Register New Company</span>
+              </a>
+            </li>
+          {% endif %}
+
+          {% comment %} {% if perms.crm.add_newcompanyregistration %}
             <li class="breadcrumb-item">
               <a href="{% url 'newcompregister' %}"><i class="bi bi-building-fill-add" style="font-size: 14px;"></i><span>Register New Company</span></a>
             </li>
-          {% endif %}
+          {% endif %} {% endcomment %}
         </ol>
       </nav>
     </div>
@@ -56,13 +74,13 @@
                 <tr>
                   <th scope="col" class="text-center p-0 m-1">#</th>
                   <th scope="col" class="text-center p-0 m-1">Company Name</th>
-                  <th scope="col" class="text-center p-0 m-1">Person Name</th>
-                  <th scope="col" class="text-center p-0 m-1">Phone</th>
-                  <th scope="col" class="text-center p-0 m-1">Email</th>
-                  <th scope="col" class="text-center p-0 m-1">Designation</th>
-                  <th scope="col" class="text-center p-0 m-1">City</th>
+                  <th scope="col" class="text-center p-0 m-1">Status</th>
+                  <th scope="col" class="text-center p-0 m-1">Complete KYC</th>
+                  <th scope="col" class="text-center p-0 m-1">Add Contact</th>
+                  <th scope="col" class="text-center p-0 m-1">New Lead</th>
+                  {% comment %} <th scope="col" class="text-center p-0 m-1">City</th>
                   <th scope="col" class="text-center p-0 m-1">State</th>
-                  <th scope="col" class="text-center p-0 m-1">Address</th>
+                  <th scope="col" class="text-center p-0 m-1">Address</th> {% endcomment %}
                 </tr>
               </thead>
               <tbody>
@@ -90,13 +108,29 @@
                         </div>
                       </td>
                       <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_name }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.person_name }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.person_phone }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.person_email }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.person_designation }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_city }}</td>
+                      <td class="p-1 m-0" style="font-size: 12px;">
+                        {% if item.kyc_status %}
+                        <i class="bi bi-check-circle-fill bg-success"> Kyc Done</i>
+                        {% else %}
+                        <i class="bi bi-x-circle bg-danger"> Pending</i>
+                        {% endif %}
+                      </td>
+                      <td class="p-1 m-0" style="font-size: 12px;">
+                        <a href="{% url 'addcompanykyc' %}"><i class="bi bi-file-earmark-plus-fill" style="font-size: 14px;"></i><span>Complete KYC</span></a>
+                      </td>
+                      <td class="p-1 m-0" style="font-size: 12px;">
+                        <a href="{% url 'addcontact' %}">
+                          <i class="bi bi-person-fill-add" style="font-size: 14px;"></i>
+                          <span>Add contact</span>
+                        </a></td>
+                      <td class="p-1 m-0" style="font-size: 12px;">
+                        <a href="{% url 'addarrival' %}">
+                          <i class="bi bi-send-plus-fill" style="font-size: 14px;"></i>
+                          <span>New Lead</span>
+                        </a></td>
+                      {% comment %} <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_city }}</td>
                       <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_state }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_address }}</td>
+                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_address }}</td> {% endcomment %}
                     </tr>
                   {% elif item.creator == request.user %}
                     <tr class="p-0 m-0">
