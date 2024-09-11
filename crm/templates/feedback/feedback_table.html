@@ -60,6 +60,7 @@
                   <th scope="col" class="text-center px-2 m-0 text-nowrap">Suggestion Title</th>
                   <th scope="col" class="text-center px-2 m-0 text-nowrap">Description</th>
                   <th scope="col" class="text-center px-2 m-0 text-nowrap">File</th>
+                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -90,6 +91,15 @@
                         <img src="{{ item.suport_file.url }}" alt="Suporting files" style="height: 20px; width: 20px;" />
                         <a href="{{ item.suport_file.url }}" target="_blank">Link</a>
                       </td>
+                      <td class="p-1 m-0 text-truncate text-center">
+                        <a href="{% url 'statusfeedback' item.id %}">
+                          {% if item.status %}
+                            <i class="bi bi-check-circle"></i>
+                          {% else %}
+                            <i class="bi bi-circle"></i>
+                          {% endif %}
+                        </a>
+                      </td>
                     </tr>
 
                     <!-- - For Creater Section Only -->
@@ -118,6 +128,15 @@
                       <td class="p-1 m-0 text-truncate text-center" style="font-size: 12px; max-width: 100px;">
                         <img src="{{ item.suport_file.url }}" alt="Suporting files" style="height: 20px; width: 20px;" />
                         <a href="{{ item.suport_file.url }}" target="_blank">Link</a>
+                      </td>
+                      <td class="p-1 m-0 text-truncate text-center">
+                        <a href="{% url 'statusfeedback' item.id %}">
+                          {% if item.status %}
+                            <i class="bi bi-check-circle"></i>
+                          {% else %}
+                            <i class="bi bi-circle"></i>
+                          {% endif %}
+                        </a>
                       </td>
                     </tr>
                   {% endif %}

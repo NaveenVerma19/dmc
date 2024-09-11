@@ -10,16 +10,55 @@ from .forms import *
 from django.db.models import Q
 import json
 from django.http import JsonResponse
-
+import os
+from datetime import datetime
+from django.db.models import Sum, F
 
 # Create your views here.
+
 
 @login_required(login_url='loginpage')
 def home(request):
     statf_data = StaffDetails.objects.get(username=request.user)
-    context = {'staff_data': statf_data}
+    all_arrivals = ArivalTable.objects.count()
 
-    return render(request, 'crm_base.html', context)
+    all_companies = CompanyFullKYC.objects.count()
+    kyc_companies = CompanyFullKYC.objects.filter(kyc_status=True).count()
+
+    total_sale = ArivalTable.objects.aggregate(
+        total=Sum(F('inv_amount') * F('currency_rate'))
+    )['total']
+
+    total_pur = ArivalTable.objects.aggregate(
+        total=Sum(F('purchase_amt') * F('currency_rate'))
+    )['total']
+
+    gp = int(total_sale) - int(total_pur)
+
+    # print("hello")
+    #  # Aggregate data by salesperson
+    # sales_data = ArivalTable.objects.values('backend_staff').annotate(total_inv_amount=Sum('inv_amount')).order_by('backend_staff')
+    # print("sales_data")
+    # # Format the data into the desired structure
+    # data = [{'name': entry['backend_staff'], 'value': float(entry['total_inv_amount'])} for entry in sales_data]
+    # print(data)
+
+
+
+
+
+    context = {
+        'staff_data': statf_data,
+        'all_arrivals': all_arrivals,
+        'total_sum': total_sale,
+        'all_companies': all_companies,
+        'kyc_companies': kyc_companies,
+        'total_pur': total_pur,
+        'gp':gp,
+        'data':data,
+    }
+
+    return render(request, 'dashboard/dashboard_home.html', context)
 
 
 @login_required(login_url='loginpage')
@@ -37,7 +76,17 @@ def profileedit(request, pk):
         form = StaffDetailsForm(
             request.POST, request.FILES, instance=statf_data)
         if form.is_valid():
+            user_details = form.save(commit=False)
+            if request.FILES.get('avatar'):
+                profile_file = request.FILES['avatar']
+                ext_profile = profile_file.name.split(
+                    '.')[-1]  # Get file extension
+                new_profile = f"{form.cleaned_data['user_full_name']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_profile}"
+                user_details.avatar.name = os.path.join('photos/', new_profile)
+
             form.save()  # Save the updated instance
+
             return redirect('profilepage')
     else:
         form = StaffDetailsForm(instance=statf_data)
@@ -47,6 +96,8 @@ def profileedit(request, pk):
     return render(request, 'crm_profile/user_edit.html', context)
 
 # New Company Registration Codes
+
+# This function is not in work
 
 
 @login_required(login_url='loginpage')
@@ -72,6 +123,8 @@ def newcompanyregistration(request):
 
     }
     return render(request, 'new_company_registration/new_comp_reg.html', context)
+
+# This function is not in work
 
 
 @login_required(login_url='loginpage')
@@ -129,6 +182,8 @@ def allnewcompany(request):
     }
     return render(request, 'new_company_registration/all_new_comp.html', context)
 
+# This function is not in work
+
 
 @login_required(login_url='loginpage')
 def companyoverview(request, pk):
@@ -158,13 +213,35 @@ def addcompanykyc(request):
         company_kyc = request.POST.get('company_kyc')
         kyc_val = CompanyFullKYC.objects.get(id=company_kyc)
         print(kyc_val.kyc_status)
-        if kyc_val.kyc_status == False: # Check that what value is set there if false the set true neither do nothing
-            kyc_val.kyc_status = True # now set value True
-            kyc_val.save() # save the instance
+        if kyc_val.kyc_status == False:  # Check that what value is set there if false the set true neither do nothing
+            kyc_val.kyc_status = True  # now set value True
+            kyc_val.save()  # save the instance
         print(kyc_val.kyc_status)
         form = CompanyKYCForm(request.POST, request.FILES)
         if form.is_valid():
             comp_kyc_data = form.save(commit=False)
+
+            if request.FILES.get('gstin_file'):
+                gst_file = request.FILES['gstin_file']
+                ext_gst = gst_file.name.split('.')[-1]  # Get file extension
+                new_gst = f"{form.cleaned_data['company_kyc']}_gst_{form.cleaned_data['gstin']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_gst}"
+                comp_kyc_data.gstin_file.name = os.path.join('gstin/', new_gst)
+
+            if request.FILES.get('pancard_file'):
+                pan_file = request.FILES['pancard_file']
+                ext_pan = pan_file.name.split('.')[-1]  # Get file extension
+                new_pan = f"{form.cleaned_data['company_kyc']}_pan_{form.cleaned_data['pancard_no']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_pan}"
+                comp_kyc_data.pancard_file.name = os.path.join('pan/', new_pan)
+
+            if request.FILES.get('msme_file'):
+                msme_file = request.FILES['msme_file']
+                ext_msme = msme_file.name.split('.')[-1]  # Get file extension
+                new_msme = f"{form.cleaned_data['company_kyc']}_msme_{form.cleaned_data['msme_no']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_msme}"
+                comp_kyc_data.msme_file.name = os.path.join('msme/', new_msme)
+
             comp_kyc_data.creator = request.user
             form.save()
             return redirect('allcompanykyc')
@@ -187,6 +264,28 @@ def editcompanykyc(request, pk):
         if form.is_valid():
             comp_kyc_edit = form.save(commit=False)
             comp_kyc_edit.editor = request.user
+
+            if request.FILES.get('gstin_file'):
+                gst_file = request.FILES['gstin_file']
+                ext_gst = gst_file.name.split('.')[-1]  # Get file extension
+                new_gst = f"{form.cleaned_data['company_kyc']}_gst_{form.cleaned_data['gstin']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_gst}"
+                comp_kyc_edit.gstin_file.name = os.path.join('gstin/', new_gst)
+
+            if request.FILES.get('pancard_file'):
+                pan_file = request.FILES['pancard_file']
+                ext_pan = pan_file.name.split('.')[-1]  # Get file extension
+                new_pan = f"{form.cleaned_data['company_kyc']}_pan_{form.cleaned_data['pancard_no']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_pan}"
+                comp_kyc_edit.pancard_file.name = os.path.join('pan/', new_pan)
+
+            if request.FILES.get('msme_file'):
+                msme_file = request.FILES['msme_file']
+                ext_msme = msme_file.name.split('.')[-1]  # Get file extension
+                new_msme = f"{form.cleaned_data['company_kyc']}_msme_{form.cleaned_data['msme_no']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_msme}"
+                comp_kyc_edit.msme_file.name = os.path.join('msme/', new_msme)
+
             # comp_kyc_edit.company_kyc = company_data.company_name
             form.save()  # Save the updated instance
             return redirect('allcompanykyc')
@@ -249,6 +348,11 @@ def overviewcompanykyc(request, pk):
 @login_required(login_url='loginpage')
 def deletecompanykyc(request, pk):
     company = CompanyKYCDetails.objects.get(id=pk)
+    company_full = company.company_kyc
+    # print(company_full.kyc_status)
+    company_full.kyc_status = False
+    company_full.save()
+    # print(company_full.kyc_status)
     company.delete()
     return redirect('newcomp')
 
@@ -269,6 +373,16 @@ def addcontact(request):
         form = ContactForm(request.POST, request.FILES)
         if form.is_valid():
             comp_kyc_data = form.save(commit=False)
+
+            if request.FILES.get('contact_card'):
+                visiting_file = request.FILES['contact_card']
+                ext_visiting = visiting_file.name.split(
+                    '.')[-1]  # Get file extension
+                new_visiting = f"{form.cleaned_data['person_name']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_visiting}"
+                comp_kyc_data.contact_card.name = os.path.join(
+                    'visitingcard/', new_visiting)
+
             comp_kyc_data.creator = request.user
             comp_kyc_data.company_name = company
             form.save()
@@ -287,15 +401,25 @@ def editcontact(request, pk):
     contact_data = ContactTable.objects.get(id=pk)
     companies = CompanyFullKYC.objects.all()
     if request.method == "POST":
-        comp_reg = request.POST.get('company_name')
-        company, created = CompanyFullKYC.objects.get_or_create(
-            company_name=comp_reg)
+        # comp_reg = request.POST.get('company_name')
+        # company, created = CompanyFullKYC.objects.get_or_create(
+        #     company_name=comp_reg)
         # Process the form submission with the existing company instance
         form = ContactForm(request.POST, request.FILES, instance=contact_data)
         if form.is_valid():
             comp_kyc_edit = form.save(commit=False)
+
+            if request.FILES.get('contact_card'):
+                visiting_file = request.FILES['contact_card']
+                ext_visiting = visiting_file.name.split(
+                    '.')[-1]  # Get file extension
+                new_visiting = f"{form.cleaned_data['person_name']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_visiting}"
+                comp_kyc_edit.contact_card.name = os.path.join(
+                    'visitingcard/', new_visiting)
+
             comp_kyc_edit.editor = request.user
-            comp_kyc_edit.company_name = company
+            # comp_kyc_edit.company_name = company
             form.save()  # Save the updated instance
             return redirect('allcontact')
         # else:
@@ -325,6 +449,7 @@ def allcontact(request):
             queryset = queryset.filter(
                 Q(person_name__icontains=query) |
                 Q(person_phone__icontains=query) |
+                Q(contact_city__icontains=query) |
                 Q(person_email__icontains=query) |
                 Q(company_name__company_name__icontains=query)
             )
@@ -474,6 +599,16 @@ def addfeedback(request):
         form = FeedbackForm(request.POST, request.FILES)
         if form.is_valid():
             comp_kyc_data = form.save(commit=False)
+
+            if request.FILES.get('suport_file'):
+                feedback_file = request.FILES['suport_file']
+                ext_feedback = feedback_file.name.split(
+                    '.')[-1]  # Get file extension
+                new_feedback = f"{form.cleaned_data['suggestion_title']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_feedback}"
+                comp_kyc_data.suport_file.name = os.path.join(
+                    'feedback/', new_feedback)
+
             comp_kyc_data.creator = request.user
             form.save()
             return redirect('allfeedback')
@@ -495,6 +630,16 @@ def editfeedback(request, pk):
                             instance=feedback_data)
         if form.is_valid():
             comp_kyc_edit = form.save(commit=False)
+
+            if request.FILES.get('suport_file'):
+                feedback_file = request.FILES['suport_file']
+                ext_feedback = feedback_file.name.split(
+                    '.')[-1]  # Get file extension
+                new_feedback = f"{form.cleaned_data['suggestion_title']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_feedback}"
+                comp_kyc_edit.suport_file.name = os.path.join(
+                    'feedback/', new_feedback)
+
             comp_kyc_edit.editor = request.user
             form.save()  # Save the updated instance
             return redirect('allfeedback')
@@ -555,6 +700,24 @@ def overviewfeedback(request, pk):
 def deletefeedback(request, pk):
     feedback = Feedback.objects.get(id=pk)
     feedback.delete()
+    return redirect('allfeedback')
+
+
+@login_required(login_url='loginpage')
+def statusfeedback(request, pk):
+    feedback = Feedback.objects.get(id=pk)
+    print(feedback.status)
+    # if feedback.status == False:
+    #     feedback.status = True
+    # else:
+    #    feedback.status = False
+    # Toggle the status (invert its value)
+    feedback.status = not feedback.status
+
+    # Save the changes to the database
+    feedback.save()
+
+    print(feedback.status)
     return redirect('allfeedback')
 
 # End Feedbac Details Functions

@@ -88,12 +88,13 @@ class ArivalForm(forms.ModelForm):
             'inv_num': forms.TextInput(attrs={"class": "form-control"}),
             'inv_date': forms.DateInput(attrs={"class": "form-control", 'type': 'date'}),
             'currency': forms.Select(attrs={"class": "form-control"}),
+            'currency_rate': forms.TextInput(attrs={"class": "form-control"}),
             'inv_amount': forms.TextInput(attrs={"class": "form-control"}),
             'payment_status': forms.Select(attrs={"class": "form-control"}),
             'folder_link': forms.TextInput(attrs={"class": "form-control"}),
-            'part_pmt_amt': forms.TextInput(attrs={"class": "form-control"}),
-            'part_pmt_deadline': forms.DateInput(attrs={"class": "form-control", 'type': 'date'}),
-            'final_pmt_amt': forms.TextInput(attrs={"class": "form-control"}),
+            'amt_recev': forms.TextInput(attrs={"class": "form-control"}),
+            # 'part_pmt_deadline': forms.DateInput(attrs={"class": "form-control", 'type': 'date'}),
+            # 'final_pmt_amt': forms.TextInput(attrs={"class": "form-control"}),
             'final_pmt_deadline': forms.DateInput(attrs={"class": "form-control", 'type': 'date'}),
             'payment_india': forms.TextInput(attrs={"class": "form-control"}),
             'itinerary_submit_date': forms.DateInput(attrs={"class": "form-control", 'type': 'date'}),
@@ -136,9 +137,9 @@ class ArivalForm(forms.ModelForm):
             'inv_amount': 'Inv Amount',
             'payment_status': 'Payment Status',
             'folder_link': 'Folder Link',
-            'part_pmt_amt': 'Part Pmt Amt',
-            'part_pmt_deadline': 'Part Pmt Deadline',
-            'final_pmt_amt': 'Final Pmt Amt',
+            'amt_recev': 'Amt Received',
+            # 'part_pmt_deadline': 'Part Pmt Deadline',
+            # 'final_pmt_amt': 'Final Pmt Amt',
             'final_pmt_deadline': 'Final Pmt Deadline',
             'payment_india': 'Payment India',
             'itinerary_submit_date': 'Itinerary Submit Date',
@@ -277,7 +278,7 @@ class FeedbackForm(ModelForm):
     class Meta:
         model = Feedback
         fields = '__all__'
-        exclude = ['creator', 'editor']
+        exclude = ['creator', 'editor', 'status']
         widgets = {
             'suggestion_title': forms.TextInput(attrs={"class": "form-control"}),
             'description': forms.Textarea(attrs={"class": "form-control"}),
@@ -287,4 +288,5 @@ class FeedbackForm(ModelForm):
             'suggestion_title': 'Any Suggestion',
             'description': 'Explain In Details ',
             'suport_file': 'Attach File',
+
         }

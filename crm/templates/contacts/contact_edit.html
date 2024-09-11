@@ -55,7 +55,7 @@
                 <form method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
 
-                  <div class="row mb-3">
+                  {% comment %} <div class="row mb-3">
                     <label for="company_name" class="col-md-4 form-label">Company Name</label>
                     <input typye="list" class="col-md-8 form-control" name="company_name" id="company_name" list="company_list" autocomplete="off" />
                     <datalist id="company_list">
@@ -63,7 +63,7 @@
                         <option value="{{ company.company_name }}">{{ company_name }}</option>
                       {% endfor %}
                     </datalist>
-                  </div>
+                  </div> {% endcomment %}
 
                   {% for fields in form %}
                     <div class="row mb-3">

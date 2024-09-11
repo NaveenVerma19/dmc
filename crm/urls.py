@@ -55,6 +55,9 @@ urlpatterns = [
     path('feedback-table', views.allfeedback, name='allfeedback'),
     path('feedback-delete/<str:pk>',
          views.deletefeedback, name='deletefeedback'),
+     path('feedback-status/<str:pk>',
+         views.statusfeedback, name='statusfeedback'),
+         
 
 
 

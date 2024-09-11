@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from crm.models import StaffDetails
 from crm.forms import StaffDetailsForm
+import os
+from datetime import datetime
 
 
 # Create your views here.
@@ -66,6 +68,13 @@ def addprofile(request):
             form = StaffDetailsForm(request.POST, request.FILES)
             if form.is_valid():
                 user_details = form.save(commit=False)
+
+                if request.FILES.get('avatar'):
+                    profile_file = request.FILES['avatar']
+                    ext_profile = profile_file.name.split('.')[-1]  # Get file extension
+                    new_profile = f"{form.cleaned_data['user_full_name']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_profile}"
+                    user_details.avatar.name = os.path.join('photos/', new_profile)
+
                 user_details.username = request.user
                 form.save()  # Save the updated instance
                 return redirect('profilepage')
