@@ -73,6 +73,12 @@ urlpatterns = [
     path('page-error-404', views.error404page, name='error404page'),
     path('page-faq', views.faqpage, name='faqpage'),
 
+    # Charts
+#     path('pie-charts', views.piechart, name='piechart'),
+#     path('apex-chart', views.apexchart, name='apexchart')
+
+
+
 
     # Travle Agent URLS
     # path('', views.company, name='company'),

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Dashboard</title>
+    <title>CDMC</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -42,14 +42,26 @@
       <!-- ======= Sidebar ======= -->
       {% include 'crm_sidebar/crm_sidebar.html' %}
       <!-- End Sidebar -->
+      {% block allcontent %}
+      <div class="alert alert-danger p-0 text-center" style="margin-top: 60px;">
+        {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+        
       {% block maincontant %}
         <!-- ===== All Page Content ===== -->
-
+        
         <!-- End All Page content -->
+      {% endblock %}
       {% endblock %}
       <!-- End #main -->
 
-      <!-- ======= Footer ======= -->
+      <!-- ======= Footer ======= -->      
       {% include 'crm_footer.html' %}
       <!-- End Footer -->
 

@@ -1,0 +1,52 @@
+{% extends 'crm_base.html' %}
+{% load static %}
+
+{% block maincontant %}
+
+<!-- Website Traffic -->
+<div class="card">
+
+    <div class="card-body pb-0">
+      <h5 class="card-title">Website Traffic <span>| Today</span></h5>
+
+      <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          echarts.init(document.querySelector("#trafficChart")).setOption({
+            tooltip: {
+              trigger: 'item'
+            },
+            legend: {
+              top: '5%',
+              left: 'center'
+            },
+            series: [{
+              name: 'Staff Sales',
+              type: 'pie',
+              radius: ['40%', '70%'],
+              avoidLabelOverlap: false,
+              label: {
+                show: false,
+                position: 'center'
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: '18',
+                  fontWeight: 'bold'
+                }
+              },
+              labelLine: {
+                show: false
+              },
+              data: {{ data|safe }}
+            }]
+          });
+        });
+      </script>
+
+    </div>
+  </div><!-- End Website Traffic -->
+
+  {% endblock %}

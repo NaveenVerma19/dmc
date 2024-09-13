@@ -20,10 +20,11 @@ from django.db.models import Sum, F
 @login_required(login_url='loginpage')
 def home(request):
     statf_data = StaffDetails.objects.get(username=request.user)
-    all_arrivals = ArivalTable.objects.count()
+    all_arrival_data = ArivalTable.objects.all()
+    # all_arrivals = ArivalTable.objects.count()
 
-    all_companies = CompanyFullKYC.objects.count()
-    kyc_companies = CompanyFullKYC.objects.filter(kyc_status=True).count()
+    # all_companies = CompanyFullKYC.objects.count()
+    # kyc_companies = CompanyFullKYC.objects.filter(kyc_status=True).count()
 
     total_sale = ArivalTable.objects.aggregate(
         total=Sum(F('inv_amount') * F('currency_rate'))
@@ -33,19 +34,96 @@ def home(request):
         total=Sum(F('purchase_amt') * F('currency_rate'))
     )['total']
 
-    gp = int(total_sale) - int(total_pur)
+    gps = int(total_sale) - int(total_pur)
+    # print(gp)
+    if request.user.is_staff:
+        all_arrivals = ArivalTable.objects.count()
+        all_companies = CompanyFullKYC.objects.count()
+        kyc_companies = CompanyFullKYC.objects.filter(kyc_status=True).count()
+
+        sales_Agency = ArivalTable.objects.values('agency_name__company_kyc__company_name').annotate(
+            total_inv_amount=Sum('inv_amount')).order_by('-total_inv_amount')[:5]
+
+        sales_Location = ArivalTable.objects.values('sub_location__country_name').annotate(
+            total_inv_amount=Sum('inv_amount')).order_by('-total_inv_amount')[:5]
+
+        total_sale = ArivalTable.objects.aggregate(
+            total=Sum(F('inv_amount') * F('currency_rate'))
+        )['total']
+
+        total_pur = ArivalTable.objects.aggregate(
+            total=Sum(F('purchase_amt') * F('currency_rate'))
+        )['total']
+
+        gps = int(total_sale) - int(total_pur)
+
+    else:
+        all_arrivals = ArivalTable.objects.filter(creator=request.user).count()
+        all_companies = ContactTable.objects.filter(
+            creator=request.user).values('company_name').distinct().count()
+        kyc_companies = 0
+
+        sales_Agency = ArivalTable.objects.filter(creator=request.user).values('agency_name__company_kyc__company_name').annotate(
+            total_inv_amount=Sum('inv_amount')).order_by('-total_inv_amount')[:5]
+
+        sales_Location = ArivalTable.objects.filter(creator=request.user).values('sub_location__country_name').annotate(
+            total_inv_amount=Sum('inv_amount')).order_by('-total_inv_amount')[:5]
+
+        total_sale = ArivalTable.objects.filter(creator=request.user).aggregate(
+            total=Sum(F('inv_amount') * F('currency_rate'))
+        )['total']
+
+        total_pur = ArivalTable.objects.filter(creator=request.user).aggregate(
+            total=Sum(F('purchase_amt') * F('currency_rate'))
+        )['total']
+
+        gps = int(total_sale) - int(total_pur)
+
+    # if condition end
+
+    agency_data = [{'name': entry['agency_name__company_kyc__company_name'], 'value': float(
+        entry['total_inv_amount'])} for entry in sales_Agency]
+
+    location_data = [{'name': entry['sub_location__country_name'], 'value': float(
+        entry['total_inv_amount'])} for entry in sales_Location]
+    # print(data)
+    agency_names = [item['name'] for item in agency_data]
+    agency_values = [item['value'] for item in agency_data]
 
     # print("hello")
-    #  # Aggregate data by salesperson
-    # sales_data = ArivalTable.objects.values('backend_staff').annotate(total_inv_amount=Sum('inv_amount')).order_by('backend_staff')
+    # Aggregate data by salesperson
+    sales_data = ArivalTable.objects.values('staff__user_full_name').annotate(
+        total_inv_amount=Sum('inv_amount')).order_by('staff__user_full_name')
     # print("sales_data")
-    # # Format the data into the desired structure
-    # data = [{'name': entry['backend_staff'], 'value': float(entry['total_inv_amount'])} for entry in sales_data]
+    # Format the data into the desired structure
+    data = [{'name': entry['staff__user_full_name'], 'value': float(
+        entry['total_inv_amount'])} for entry in sales_data]
     # print(data)
+    names = [item['name'] for item in data]
+    values = [item['value'] for item in data]
 
+    pur_data = ArivalTable.objects.values('staff__user_full_name').annotate(
+        total_inv_amount=Sum('purchase_amt')).order_by('staff__user_full_name')
 
+    data2 = [{'name': entry['staff__user_full_name'],
+              'value': float(entry['total_inv_amount'])} for entry in pur_data]
+    # print(data)
+    value = [item['value'] for item in data2]
 
+    # Create dictionaries for easy lookup
+    data_dict = {item['name']: item['value'] for item in data}
+    data2_dict = {item['name']: item['value'] for item in data2}
 
+    # Calculate the difference
+    gp_data = []
+    for name in data_dict:
+        value1 = data_dict.get(name, 0)
+        value2 = data2_dict.get(name, 0)
+        difference = value1 - value2
+        gp_data.append({'name': name, 'value': difference})
+
+    gp = [item['value'] for item in gp_data]
+    # print(gp_data)
 
     context = {
         'staff_data': statf_data,
@@ -54,8 +132,18 @@ def home(request):
         'all_companies': all_companies,
         'kyc_companies': kyc_companies,
         'total_pur': total_pur,
-        'gp':gp,
-        'data':data,
+        'gps': gps,
+        'data': data,
+        'names': names,
+        'values': values,
+        'value': value,
+        'gp': gp,
+        'gp_data': gp_data,
+        'all_arrival_data': all_arrival_data,
+        'agency_names': agency_names,
+        'agency_values': agency_values,
+        'agency_data': agency_data,
+        'location_data': location_data,
     }
 
     return render(request, 'dashboard/dashboard_home.html', context)
@@ -643,8 +731,10 @@ def editfeedback(request, pk):
             comp_kyc_edit.editor = request.user
             form.save()  # Save the updated instance
             return redirect('allfeedback')
+            messages.success(request, "updated successfully")
     else:
         form = FeedbackForm(instance=feedback_data)
+        messages.error(request, "Something error")
 
     context = {
         'form': form,
@@ -705,19 +795,17 @@ def deletefeedback(request, pk):
 
 @login_required(login_url='loginpage')
 def statusfeedback(request, pk):
-    feedback = Feedback.objects.get(id=pk)
-    print(feedback.status)
-    # if feedback.status == False:
-    #     feedback.status = True
-    # else:
-    #    feedback.status = False
-    # Toggle the status (invert its value)
-    feedback.status = not feedback.status
+    if request.user.is_staff:
+        feedback = Feedback.objects.get(id=pk)
 
-    # Save the changes to the database
-    feedback.save()
+        feedback.status = not feedback.status
 
-    print(feedback.status)
+        # Save the changes to the database
+        feedback.save()
+        messages.success(request, "Satus updated successfully")
+    else:
+        messages.error(request, "You Don't have access")
+
     return redirect('allfeedback')
 
 # End Feedbac Details Functions
