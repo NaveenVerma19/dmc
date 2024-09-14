@@ -169,7 +169,8 @@ def profileedit(request, pk):
                 profile_file = request.FILES['avatar']
                 ext_profile = profile_file.name.split(
                     '.')[-1]  # Get file extension
-                new_profile = f"{form.cleaned_data['user_full_name']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_profile}"
+                new_profile = f"{form.cleaned_data['user_full_name']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_profile}"
                 user_details.avatar.name = os.path.join('photos/', new_profile)
 
             form.save()  # Save the updated instance
@@ -249,10 +250,8 @@ def allnewcompany(request):
         end_date = search_form.cleaned_data.get('end_date')
         if query:
             queryset = queryset.filter(
-                Q(person_name__icontains=query) |
-                Q(person_email__icontains=query) |
-                Q(person_phone__icontains=query) |
-                Q(company_name__company_name__icontains=query)
+                Q(company_name__icontains=query) |
+                Q(kyc_status__icontains=query)
             )
         if start_date and end_date:
             queryset = queryset.filter(
@@ -311,19 +310,22 @@ def addcompanykyc(request):
             if request.FILES.get('gstin_file'):
                 gst_file = request.FILES['gstin_file']
                 ext_gst = gst_file.name.split('.')[-1]  # Get file extension
-                new_gst = f"{form.cleaned_data['company_kyc']}_gst_{form.cleaned_data['gstin']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_gst}"
+                new_gst = f"{form.cleaned_data['company_kyc']}_gst_{form.cleaned_data['gstin']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_gst}"
                 comp_kyc_data.gstin_file.name = os.path.join('gstin/', new_gst)
 
             if request.FILES.get('pancard_file'):
                 pan_file = request.FILES['pancard_file']
                 ext_pan = pan_file.name.split('.')[-1]  # Get file extension
-                new_pan = f"{form.cleaned_data['company_kyc']}_pan_{form.cleaned_data['pancard_no']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_pan}"
+                new_pan = f"{form.cleaned_data['company_kyc']}_pan_{form.cleaned_data['pancard_no']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_pan}"
                 comp_kyc_data.pancard_file.name = os.path.join('pan/', new_pan)
 
             if request.FILES.get('msme_file'):
                 msme_file = request.FILES['msme_file']
                 ext_msme = msme_file.name.split('.')[-1]  # Get file extension
-                new_msme = f"{form.cleaned_data['company_kyc']}_msme_{form.cleaned_data['msme_no']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_msme}"
+                new_msme = f"{form.cleaned_data['company_kyc']}_msme_{form.cleaned_data['msme_no']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_msme}"
                 comp_kyc_data.msme_file.name = os.path.join('msme/', new_msme)
 
             comp_kyc_data.creator = request.user
@@ -352,19 +354,22 @@ def editcompanykyc(request, pk):
             if request.FILES.get('gstin_file'):
                 gst_file = request.FILES['gstin_file']
                 ext_gst = gst_file.name.split('.')[-1]  # Get file extension
-                new_gst = f"{form.cleaned_data['company_kyc']}_gst_{form.cleaned_data['gstin']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_gst}"
+                new_gst = f"{form.cleaned_data['company_kyc']}_gst_{form.cleaned_data['gstin']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_gst}"
                 comp_kyc_edit.gstin_file.name = os.path.join('gstin/', new_gst)
 
             if request.FILES.get('pancard_file'):
                 pan_file = request.FILES['pancard_file']
                 ext_pan = pan_file.name.split('.')[-1]  # Get file extension
-                new_pan = f"{form.cleaned_data['company_kyc']}_pan_{form.cleaned_data['pancard_no']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_pan}"
+                new_pan = f"{form.cleaned_data['company_kyc']}_pan_{form.cleaned_data['pancard_no']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_pan}"
                 comp_kyc_edit.pancard_file.name = os.path.join('pan/', new_pan)
 
             if request.FILES.get('msme_file'):
                 msme_file = request.FILES['msme_file']
                 ext_msme = msme_file.name.split('.')[-1]  # Get file extension
-                new_msme = f"{form.cleaned_data['company_kyc']}_msme_{form.cleaned_data['msme_no']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_msme}"
+                new_msme = f"{form.cleaned_data['company_kyc']}_msme_{form.cleaned_data['msme_no']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_msme}"
                 comp_kyc_edit.msme_file.name = os.path.join('msme/', new_msme)
 
             # comp_kyc_edit.company_kyc = company_data.company_name
@@ -459,7 +464,8 @@ def addcontact(request):
                 visiting_file = request.FILES['contact_card']
                 ext_visiting = visiting_file.name.split(
                     '.')[-1]  # Get file extension
-                new_visiting = f"{form.cleaned_data['person_name']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_visiting}"
+                new_visiting = f"{form.cleaned_data['person_name']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_visiting}"
                 comp_kyc_data.contact_card.name = os.path.join(
                     'visitingcard/', new_visiting)
 
@@ -493,7 +499,8 @@ def editcontact(request, pk):
                 visiting_file = request.FILES['contact_card']
                 ext_visiting = visiting_file.name.split(
                     '.')[-1]  # Get file extension
-                new_visiting = f"{form.cleaned_data['person_name']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_visiting}"
+                new_visiting = f"{form.cleaned_data['person_name']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_visiting}"
                 comp_kyc_edit.contact_card.name = os.path.join(
                     'visitingcard/', new_visiting)
 
@@ -629,7 +636,7 @@ def allarrival(request):
                 Q(staff__username__username__icontains=query) |
                 Q(file_Ref__icontains=query) |
                 Q(lead_pax_name__icontains=query) |
-                Q(agency_name__company_name__icontains=query)
+                Q(agency_name__company_kyc__company_name__icontains=query)
             )
         if start_date and end_date:
             queryset = queryset.filter(
@@ -683,7 +690,8 @@ def addfeedback(request):
                 feedback_file = request.FILES['suport_file']
                 ext_feedback = feedback_file.name.split(
                     '.')[-1]  # Get file extension
-                new_feedback = f"{form.cleaned_data['suggestion_title']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_feedback}"
+                new_feedback = f"{form.cleaned_data['suggestion_title']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_feedback}"
                 comp_kyc_data.suport_file.name = os.path.join(
                     'feedback/', new_feedback)
 
@@ -713,7 +721,8 @@ def editfeedback(request, pk):
                 feedback_file = request.FILES['suport_file']
                 ext_feedback = feedback_file.name.split(
                     '.')[-1]  # Get file extension
-                new_feedback = f"{form.cleaned_data['suggestion_title']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_feedback}"
+                new_feedback = f"{form.cleaned_data['suggestion_title']}_{
+                    datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext_feedback}"
                 comp_kyc_edit.suport_file.name = os.path.join(
                     'feedback/', new_feedback)
 
