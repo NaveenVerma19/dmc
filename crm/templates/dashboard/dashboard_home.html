@@ -121,7 +121,8 @@
                             }
                           },
                           dataLabels: {
-                            enabled: false
+                            enabled: true,
+                            formatter: (val) => { return Math.round(val)}
                           },
                           stroke: {
                             show: true,
@@ -132,6 +133,9 @@
                             categories: {{names|safe}}
                           },
                           yaxis: {
+                            labels: {
+                              formatter: (val) => { return Math.round(val)}
+                            },
                             title: {
                               text: '$ (thousands)'
                             }
@@ -142,7 +146,7 @@
                           tooltip: {
                             y: {
                               formatter: function (val) {
-                                return '$ ' + val + ' thousands'
+                                return '$ ' + Math.round(val) + ' thousands'
                               }
                             }
                           }
