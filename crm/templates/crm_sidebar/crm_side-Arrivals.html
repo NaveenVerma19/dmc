@@ -1,11 +1,11 @@
 <!-- ======= Tables ======= -->
 <li class="nav-item">
-  <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-    <i class="bi bi-layout-text-window-reverse"></i>
+  <a class="nav-link collapsed" data-bs-target="#arrival-nav" data-bs-toggle="collapse" href="#">
+    <i class="bi bi-suitcase2-fill" style="font-size: 25px;"></i>
     <span>Arrivals</span>
     <i class="bi bi-chevron-down ms-auto"></i>
   </a>
-  <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+  <ul id="arrival-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
     {% if perms.crm.add_arivaltable %}
       <li>
         <a href="{% url 'addarrival' %}"><i class="bi bi-journal-plus" style="font-size: 20px;"></i><span>Add Arrivals</span></a>

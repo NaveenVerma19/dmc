@@ -135,7 +135,7 @@ class StateAdmin(ImportExportModelAdmin):
 
 @admin.register(NewCompanyRegistration)
 class NewCompanyRegistrationAdmin(ImportExportModelAdmin):
-    list_display = ('id', 'company_name', 'company_city',
+    list_display = ( 'company_name','id', 'gst_number',  'company_city',
                     'person_name', 'person_phone')
 
 

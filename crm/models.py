@@ -58,7 +58,8 @@ class CompanyFullKYC(models.Model):
 class NewCompanyRegistration(models.Model):
     creator = models.ForeignKey(User, related_name='newcreator',on_delete=models.SET_NULL, null=True, blank=True)
     updater = models.ForeignKey(User, related_name="updater", on_delete=models.SET_NULL, null=True, blank=True)
-    company_name = models.ForeignKey(CompanyFullKYC, related_name="newcompany", on_delete=models.CASCADE, null=True, blank=True)
+    company_name = models.CharField(max_length=255, null=True, blank=True)
+    gst_number = models.CharField(max_length=16, blank=True, null=True)
     company_address = models.CharField(max_length=200)
     company_city = models.CharField(max_length=100, blank=True)
     company_state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
@@ -75,7 +76,7 @@ class NewCompanyRegistration(models.Model):
         ordering = ['-updated', '-created']
 
     def __str__(self):
-        return self.company_name.company_name
+        return self.company_name
 
     
 class OfficeRole(models.Model):

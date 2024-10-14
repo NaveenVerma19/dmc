@@ -4,7 +4,7 @@
 {% block maincontant %}
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Company</h1>
+      <h1>Company Master</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
@@ -13,20 +13,20 @@
           <li class="breadcrumb-item active">
             <a href="{% url 'newcomp' %}">New Registered Companies</a>
           </li>
-          <li class="breadcrumb-item">
+          {% comment %} <li class="breadcrumb-item">
             <a href="{% url 'allcompanykyc' %}">KYC Completed Companies</a>
           </li>
           {% if perms.crm.add_companykycdetails %}
             <li class="breadcrumb-item">
               <a href="{% url 'addcompanykyc' %}"><i class="bi bi-file-earmark-plus-fill" style="font-size: 14px;"></i><span>Add KYC</span></a>
             </li>
-          {% endif %}
-          <li class="breadcrumb-item">
+          {% endif %} {% endcomment %}
+          {% comment %} <li class="breadcrumb-item">
             <a href="{% url 'allcontact' %}">All Contact</a>
-          </li>
+          </li> {% endcomment %}
           {% if perms.crm.add_contacttable %}
             <li class="breadcrumb-item">
-              <a href="{% url 'addcontact' %}">
+              <a href="{% url 'newcompregister' %}">
                 <i class="bi bi-person-fill-add" style="font-size: 14px;"></i>
                 <span>Add New Company</span>
               </a>
@@ -71,43 +71,35 @@
           </div>
 
           <div class="table-responsive" style="width: auto; height: 450px;">
-            <table class="table table-success table-striped table-hover">
+            <table class="table table-striped table-hover">
               <thead>
                 <tr>
                   <th scope="col" class="text-center p-0 m-1">#</th>
                   <th scope="col" class="text-center p-0 m-1">Company Name</th>
-                  <th scope="col" class="text-center p-0 m-1">Status</th>
-                  <th scope="col" class="text-center p-0 m-1">Complete KYC</th>
-                  <th scope="col" class="text-center p-0 m-1">Add Contact</th>
-                  <th scope="col" class="text-center p-0 m-1">New Lead</th>
+                  <th scope="col" class="text-center p-0 m-1">GSTIN</th>
+                  <th scope="col" class="text-center p-0 m-1">City</th>
+                  <th scope="col" class="text-center p-0 m-1">Person Name</th>
+                  <th scope="col" class="text-center p-0 m-1">Phone Number</th>
+                  <th scope="col" class="text-center p-0 m-1">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {% for item in company_data %}
-                  <tr class="p-0 m-0">
-                    <td class="p-1 m-0">{{forloop.counter }}</td>
-                    <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_name }}</td>
-                    <td class="p-1 m-0" style="font-size: 12px;">
-                      {% if item.kyc_status %}
-                        <i class="bi bi-check-circle-fill bg-success">Kyc Done</i>
-                      {% else %}
-                        <i class="bi bi-x-circle bg-danger">Pending</i>
+                  <tr class="p-0 m-0 text-center">
+                    <td class="p-1 m-0 text-center">{{ forloop.counter }}</td>
+                    <td class="p-1 m-0 text-center" style="font-size: 12px;">{{ item.company_name }}</td>
+                    <td class="p-1 m-0 text-center" style="font-size: 12px;">{{ item.gst_number }}</td>
+                    <td class="p-1 m-0 text-center" style="font-size: 12px;">{{ item.company_city }}</td>
+                    <td class="p-1 m-0 text-center" style="font-size: 12px;">{{ item.person_name }}</td>
+                    <td class="p-1 m-0 text-center" style="font-size: 12px;">{{ item.person_phone }}</td>
+                    <td class="p-0 m-0 text-nowrap">
+                      <a class="bi bi-eye-fill" style="font-size: 20px;" data-bs-toggle="tooltip" data-bs-placement="top" title="View" href="{% url 'compoverview' item.id %}" >  </a>
+                      {% if perms.crm.change_newcompanyregistration %}
+                        <a class="bi bi-pencil-square" style="font-size: 20px;" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" href="{% url 'newcompedit' item.id %}"> </a>
                       {% endif %}
-                    </td>
-                    <td class="p-1 m-0" style="font-size: 12px;">
-                      <a href="{% url 'addcompanykyc' %}"><i class="bi bi-file-earmark-plus-fill" style="font-size: 14px;"></i><span>Complete KYC</span></a>
-                    </td>
-                    <td class="p-1 m-0" style="font-size: 12px;">
-                      <a href="{% url 'addcontact' %}">
-                        <i class="bi bi-person-fill-add" style="font-size: 14px;"></i>
-                        <span>Add contact</span>
-                      </a>
-                    </td>
-                    <td class="p-1 m-0" style="font-size: 12px;">
-                      <a href="{% url 'addarrival' %}">
-                        <i class="bi bi-send-plus-fill" style="font-size: 14px;"></i>
-                        <span>New Lead</span>
-                      </a>
+                      {% if perms.crm.delete_newcompanyregistration %}
+                        <a class="bi bi-trash-fill" style="font-size: 20px;" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" href="{% url 'newcompdelete' item.id %}">  </a>
+                      {% endif %}
                     </td>
                   </tr>
                 {% endfor %}

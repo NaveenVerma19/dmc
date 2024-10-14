@@ -10,22 +10,12 @@
           <li class="breadcrumb-item">
             <a href="{% url 'home' %}">Home</a>
           </li>
-          <li class="breadcrumb-item"><a href="{% url 'newcomp' %}">New Registered Companies</a></li>
-          <li class="breadcrumb-item">
-            <a href="{% url 'allcompanykyc' %}">KYC Completed Companies</a>
-          </li>
-          
-          {% if perms.crm.add_companykycdetails %}
-            <li class="breadcrumb-item">
-              <a href="{% url 'addcompanykyc' %}"><i class="bi bi-file-earmark-plus-fill" style="font-size: 14px;"></i><span>Add KYC</span></a>
-            </li>
-          {% endif %}
           <li class="breadcrumb-item active">All Contacts</li>
           {% if perms.crm.add_contacttable %}
             <li class="breadcrumb-item">
               <a href="{% url 'addcontact' %}">
                 <i class="bi bi-person-fill-add" style="font-size: 14px;"></i>
-                <span>Add New Company</span>
+                <span>Add Contact</span>
               </a>
             </li>
           {% endif %}
@@ -62,7 +52,7 @@
           </div>
 
           <div class="table-responsive" style="width: auto; height: 450px;">
-            <table class="table table-success table-striped table-hover">
+            <table class="table table-striped table-hover">
               <thead>
                 <tr>
                   <th scope="col" class="text-center px-2 m-0">#</th>
@@ -72,71 +62,93 @@
                   <th scope="col" class="text-center px-2 m-0 text-nowrap">Phone</th>
                   <th scope="col" class="text-center px-2 m-0 text-nowrap">Email</th>
                   <th scope="col" class="text-center px-2 m-0 text-nowrap">City</th>
+                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {% for item in contact_data %}
                   {% if request.user.is_staff %}
-                    <tr class="p-0 m-0">
+                    <tr class="p-0 m-0 text-center">
                       <td class="p-0 m-0 text-nowrap">
-                        <div class="dropdown p-0">
-                          <button class="btn bi bi-three-dots dropdown-toggle p-0 m-0" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                          <ul class="dropdown-menu m-0 p-0">
-                            <li>
-                              <a class="btn btn-sm btn-info p-0 m-0" href="{% url 'overviewcontact' item.id %}"><i class="bi bi-eye-fill p-0 m-0" style="font-size: 11px;"></i> View</a>
-                            </li>
-                            {% if perms.crm.change_arivaltable %}
-                              <li>
-                                <a class="btn btn-sm btn-warning p-0 m-0" href="{% url 'editcontact' item.id %}"><i class="bi bi-pencil-square" style="font-size: 11px;"></i>Edit</a>
-                              </li>
-                            {% endif %}
-                            {% if perms.crm.delete_arivaltable %}
-                              <li>
-                                <a class="btn btn-sm btn-danger p-0 m-0" href="{% url 'deletecontact' item.id %}"><i class="bi bi-trash-fill" style="font-size: 11px;"></i> Delete</a>
-                              </li>
-                            {% endif %}
-                          </ul>
-                        </div>
+                        {{forloop.counter}}
                       </td>
 
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.company_name.company_name }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_name }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.contact_designation }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_phone }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_email }}</td>
+                      <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.company_name.company_name }}</td>
+                      <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.person_name }}</td>
+                      <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.contact_designation }}</td>
+                      <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.person_phone }}</td>
+                      <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.person_email }}</td>
                       <td class="p-1 m-0" style="font-size: 12px;">{{ item.contact_city }}</td>
+                      <td class="p-0 m-0 text-center">
+                        <a class="bi bi-eye-fill" 
+                          style="font-size: 20px;" 
+                          data-bs-toggle="tooltip" 
+                          data-bs-placement="top" 
+                          title="View" 
+                          href="{% url 'overviewcontact' item.id %}" >  
+                        </a>
+                        {% if perms.crm.change_newcompanyregistration %}
+                          <a class="bi bi-pencil-square" 
+                            style="font-size: 20px;" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="top" 
+                            title="Edit" 
+                            href="{% url 'editcontact' item.id %}"> 
+                          </a>
+                        {% endif %}
+                        {% if perms.crm.delete_newcompanyregistration %}
+                          <a class="bi bi-trash-fill" 
+                            style="font-size: 20px;" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="top" 
+                            title="Delete" 
+                            href="{% url 'deletecontact' item.id %}">  
+                          </a>
+                        {% endif %}
+                      </td>
                     </tr>
 
                     <!-- - For Creater Section Only -->
                   {% elif item.creator == request.user %}
-                    <tr class="p-0 m-0">
-                      <td class="p-0 m-0 text-nowrap">
-                        <div class="dropdown p-0">
-                          <button class="btn bi bi-three-dots dropdown-toggle p-0 m-0" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                          <ul class="dropdown-menu m-0 p-0">
-                            <li>
-                              <a class="btn btn-sm btn-info p-0 m-0" href="{% url 'overviewcontact' item.id %}"><i class="bi bi-eye-fill p-0 m-0" style="font-size: 11px;"></i> View</a>
-                            </li>
-                            {% if perms.crm.change_arivaltable %}
-                              <li>
-                                <a class="btn btn-sm btn-warning p-0 m-0" href="{% url 'editcontact' item.id %}"><i class="bi bi-pencil-square" style="font-size: 11px;"></i>Edit</a>
-                              </li>
-                            {% endif %}
-                            {% if perms.crm.delete_arivaltable %}
-                              <li>
-                                <a class="btn btn-sm btn-danger p-0 m-0" href="{% url 'deletecontact' item.id %}"><i class="bi bi-trash-fill" style="font-size: 11px;"></i> Delete</a>
-                              </li>
-                            {% endif %}
-                          </ul>
-                        </div>
-                      </td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.company_name.company_name }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_name }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.contact_designation }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_phone }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.person_email }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.contact_city }}</td>
-                    </tr>
+                  <tr class="p-0 m-0 text-center">
+                    <td class="p-0 m-0 text-nowrap">
+                      {{forloop.counter}}
+                    </td>
+
+                    <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.company_name.company_name }}</td>
+                    <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.person_name }}</td>
+                    <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.contact_designation }}</td>
+                    <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.person_phone }}</td>
+                    <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.person_email }}</td>
+                    <td class="p-1 m-0" style="font-size: 12px;">{{ item.contact_city }}</td>
+                    <td class="p-0 m-0 text-center">
+                      <a class="bi bi-eye-fill" 
+                        style="font-size: 20px;" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top" 
+                        title="View" 
+                        href="{% url 'overviewcontact' item.id %}" >  
+                      </a>
+                      {% if perms.crm.change_newcompanyregistration %}
+                        <a class="bi bi-pencil-square" 
+                          style="font-size: 20px;" 
+                          data-bs-toggle="tooltip" 
+                          data-bs-placement="top" 
+                          title="Edit" 
+                          href="{% url 'editcontact' item.id %}"> 
+                        </a>
+                      {% endif %}
+                      {% if perms.crm.delete_newcompanyregistration %}
+                        <a class="bi bi-trash-fill" 
+                          style="font-size: 20px;" 
+                          data-bs-toggle="tooltip" 
+                          data-bs-placement="top" 
+                          title="Delete" 
+                          href="{% url 'deletecontact' item.id %}">  
+                        </a>
+                      {% endif %}
+                    </td>
+                  </tr>
                   {% endif %}
                 {% endfor %}
               </tbody>

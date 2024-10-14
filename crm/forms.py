@@ -42,15 +42,15 @@ class ContactForm(forms.ModelForm):
             'person_name': 'Person Name',
             'contact_designation': 'Designation',
             'person_phone': 'Phone No',
-            'person_email': 'Email ID',            
-            'contact_local_area1' : 'Local Area 1',
-            'contact_local_area2' : 'Local Area 2',
-            'contact_city' : 'City',
-            'contact_state' : 'State',
-            'contact_pincode' : 'Pincode',
-            'cat_client' : 'Client Category',
-            'focus_area' : 'Focuse Area',
-            'contact_card' : 'Visiting Card',
+            'person_email': 'Email ID',
+            'contact_local_area1': 'Local Area 1',
+            'contact_local_area2': 'Local Area 2',
+            'contact_city': 'City',
+            'contact_state': 'State',
+            'contact_pincode': 'Pincode',
+            'cat_client': 'Client Category',
+            'focus_area': 'Focuse Area',
+            'contact_card': 'Visiting Card',
         }
 
     # def __init__(self, *args, **kwargs):
@@ -200,9 +200,10 @@ class NewCompanyRegistrationForm(forms.ModelForm):
     class Meta:
         model = NewCompanyRegistration
         fields = '__all__'
-        exclude = ['creator', 'updater', 'company_name']
+        exclude = ['creator', 'updater',]
         widgets = {
-            # 'company_name': forms.TextInput(attrs={"class": "form-control"}),
+            'company_name': forms.TextInput(attrs={"class": "form-control"}),
+            'gst_number': forms.TextInput(attrs={"class": "form-control"}),
             'company_address': forms.Textarea(attrs={"class": "form-control"}),
             'company_city': forms.TextInput(attrs={"class": "form-control"}),
             'company_state': forms.Select(attrs={"class": "form-control"}),
@@ -214,6 +215,7 @@ class NewCompanyRegistrationForm(forms.ModelForm):
         }
         labels = {
             'company_name': ' New Company Name',
+            'gst_number': 'GSTIN :',
             'company_address': 'Company Address ',
             'company_city': ' Company City',
             'company_state': ' State',

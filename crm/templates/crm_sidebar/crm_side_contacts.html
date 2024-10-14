@@ -1,0 +1,21 @@
+<!-- ======= Tables ======= -->
+<li class="nav-item">
+  <a class="nav-link collapsed" data-bs-target="#contact-nav" data-bs-toggle="collapse" href="#">
+    <i class="bi bi-layout-text-window-reverse"></i>
+    <span>Client Individual Master</span>
+    <i class="bi bi-chevron-down ms-auto"></i>
+  </a>
+  <ul id="contact-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+    {% if perms.crm.add_contacttable %}
+      <li>
+        <a href="{% url 'addcontact' %}"><i class="bi bi-person-fill-add" style="font-size: 20px;"></i><span>Add Contact</span></a>
+      </li>
+    {% endif %}
+    {% if perms.crm.view_contacttable %}
+      <li>
+        <a href="{% url 'allcontact' %}"><i class="bi bi-person-lines-fill" style="font-size: 20px;"></i><span>Contact Table</span></a>
+      </li>
+    {% endif %}
+  </ul>
+</li>
+<!-- End Tables Nav -->

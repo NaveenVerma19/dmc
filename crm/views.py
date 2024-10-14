@@ -187,20 +187,20 @@ def profileedit(request, pk):
 # This function is not in work
 
 
-@login_required(login_url='loginpage')
+# @login_required(login_url='loginpage')
 def newcompanyregistration(request):
     statf_data = StaffDetails.objects.get(username=request.user)
     form = NewCompanyRegistrationForm()
     companies = CompanyFullKYC.objects.all()
     if request.method == 'POST':
-        comp_reg = request.POST.get('company_name')
-        company, created = CompanyFullKYC.objects.get_or_create(
-            company_name=comp_reg)
+        # comp_reg = request.POST.get('company_name')
+        # company, created = CompanyFullKYC.objects.get_or_create(
+        #     company_name=comp_reg)
         form = NewCompanyRegistrationForm(request.POST)
         if form.is_valid():
             comp_regs = form.save(commit=False)
             comp_regs.creator = request.user
-            comp_regs.company_name = company
+            # comp_regs.company_name = company
             form.save()
             return redirect('newcomp')
     context = {
@@ -240,8 +240,8 @@ def newcompanyedit(request, pk):
 @login_required(login_url='loginpage')
 def allnewcompany(request):
     statf_data = StaffDetails.objects.get(username=request.user)
-    # queryset = NewCompanyRegistration.objects.all()
-    queryset = CompanyFullKYC.objects.all()
+    queryset = NewCompanyRegistration.objects.all()
+    # queryset = CompanyFullKYC.objects.all()
     search_form = SearchForm(request.GET or None)
     if search_form.is_valid():
         query = search_form.cleaned_data.get('query')
@@ -250,7 +250,9 @@ def allnewcompany(request):
         if query:
             queryset = queryset.filter(
                 Q(company_name__icontains=query) |
-                Q(kyc_status__icontains=query)
+                Q(person_name__icontains=query) |
+                Q(company_city__icontains=query) |
+                Q(gst_number__icontains=query)
             )
         if start_date and end_date:
             queryset = queryset.filter(
