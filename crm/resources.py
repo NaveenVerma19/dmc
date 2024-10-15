@@ -32,9 +32,9 @@ class CategoryClientsResource(resources.ModelResource):
         model = CategoryClients
 
 # CompanyFullKYC
-class CompanyFullKYCResource(resources.ModelResource):
-    class meta:
-        model = CompanyFullKYC
+# class CompanyFullKYCResource(resources.ModelResource):
+#     class meta:
+#         model = CompanyFullKYC
 
 # Affiliations
 class AffiliationsResource(resources.ModelResource):

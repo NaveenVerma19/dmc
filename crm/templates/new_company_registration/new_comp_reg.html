@@ -7,7 +7,9 @@
           <li class="breadcrumb-item">
             <a href="{% url 'home' %}">Home</a>
           </li>
-          <li class="breadcrumb-item"><a href="{% url 'newcomp' %}"> New Compnay </a></li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'newcomp' %}">New Compnay</a>
+          </li>
           <li class="breadcrumb-item active">New Company Registration</li>
         </ol>
       </nav>
@@ -30,21 +32,16 @@
                 <form method="POST">
                   {% csrf_token %}
 
-                  {% comment %} <div class="row mb-3">
-                    <label for="company_name" class="col-md-4 form-label">Company Name</label>
-                    <input typye="list" class="col-md-8 form-control" name="company_name" id="company_name" list="company_list" autocomplete="off" />
-                    <datalist id="company_list">
-                      {% for company in companies %}
-                        <option value="{{ company.company_name }}">{{ company_name }}</option>
-                      {% endfor %}
-                    </datalist>
-                  </div> {% endcomment %}
-
-                  {% for field in form %} 
-                      <div class="row mb-3">
-                        <label for="{{ field.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">{{ field.label }}</label>
-                        <div class="col-md-8 col-lg-9">{{ field }}</div>
-                      </div>
+                  {% for field in form %}
+                    <div class="row mb-3">
+                      <label for="{{ field.id_for_label }}" class="col-md-4 col-lg-3 col-form-label">
+                        {{ field.label }}
+                        {% if field.field.required %}
+                          <span class="required text-danger">*</span>
+                        {% endif %}
+                      </label>
+                      <div class="col-md-8 col-lg-9">{{ field }}</div>
+                    </div>
                   {% endfor %}
 
                   <div class="text-center">

@@ -200,7 +200,7 @@ class NewCompanyRegistrationForm(forms.ModelForm):
     class Meta:
         model = NewCompanyRegistration
         fields = '__all__'
-        exclude = ['creator', 'updater',]
+        exclude = ['creator', 'updater', 'kyc_status']
         widgets = {
             'company_name': forms.TextInput(attrs={"class": "form-control"}),
             'gst_number': forms.TextInput(attrs={"class": "form-control"}),

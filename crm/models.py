@@ -42,19 +42,19 @@ class StaffDetails(models.Model):
     def __str__(self):
         return self.user_full_name
 
-class CompanyFullKYC(models.Model):
-    company_name = models.CharField(max_length=200)
-    kyc_status = models.BooleanField(default=False)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
+# class CompanyFullKYC(models.Model):
+#     company_name = models.CharField(max_length=200)
+#     kyc_status = models.BooleanField(default=False)
+#     updated = models.DateTimeField(auto_now=True)
+#     created = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        ordering = ['-updated', '-created']
+#     class Meta:
+#         ordering = ['-updated', '-created']
 
-    def __str__(self):
-        return self.company_name
+#     def __str__(self):
+#         return self.company_name
 
-# Currently this Table is not in use
+
 class NewCompanyRegistration(models.Model):
     creator = models.ForeignKey(User, related_name='newcreator',on_delete=models.SET_NULL, null=True, blank=True)
     updater = models.ForeignKey(User, related_name="updater", on_delete=models.SET_NULL, null=True, blank=True)
@@ -68,6 +68,7 @@ class NewCompanyRegistration(models.Model):
     person_phone = models.CharField(max_length=10)
     person_email = models.EmailField(max_length=100)
     person_designation = models.CharField(max_length=200)
+    kyc_status = models.BooleanField(default=False)
 
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -105,7 +106,7 @@ class Affiliations(models.Model):
 class CompanyKYCDetails(models.Model):
     creator = models.ForeignKey(User, related_name='creator',on_delete=models.SET_NULL, null=True, blank=True)
     editor = models.ForeignKey(User, related_name="editor", on_delete=models.SET_NULL, null=True, blank=True)
-    company_kyc = models.ForeignKey(CompanyFullKYC, on_delete=models.SET_NULL, null=True)
+    company_kyc = models.ForeignKey(NewCompanyRegistration, on_delete=models.DO_NOTHING)
     company_branch = models.CharField(max_length=150)    
     Constitution = models.CharField(max_length=255)
     office_role = models.ForeignKey(OfficeRole, on_delete=models.SET_NULL, null=True)
@@ -162,7 +163,7 @@ class ContactTable(models.Model):
     creator = models.ForeignKey(User, related_name='contactcreator',on_delete=models.SET_NULL, null=True, blank=True)
     editor = models.ForeignKey(User, related_name="contacteditor", on_delete=models.SET_NULL, null=True, blank=True)
     company_name = models.ForeignKey(
-        CompanyFullKYC, on_delete=models.CASCADE, null=True, blank=True)
+        NewCompanyRegistration, on_delete=models.CASCADE)
     person_name = models.CharField(max_length=200)
     contact_designation = models.CharField(max_length=255)
     person_phone = models.CharField(max_length=10)
@@ -197,16 +198,6 @@ class PaymentStatus(models.Model):
         return self.status_name
 
 
-# class Staff(models.Model):
-#     staff_name = models.CharField(max_length=100)
-#     updated = models.DateTimeField(auto_now=True)
-#     created = models.DateTimeField(auto_now_add=True)
-
-#     class Meta:
-#         ordering = ['-updated', '-created']
-
-#     def __str__(self):
-#         return self.staff_name
 
 
 class BackendStaff(models.Model):
@@ -290,7 +281,7 @@ class ArivalTable(models.Model):
     ground_partner_file_ref = models.CharField(
         max_length=100, blank=True, null=True)
     agency_name = models.ForeignKey(
-        CompanyKYCDetails, on_delete=models.DO_NOTHING, null=True)
+        CompanyKYCDetails, on_delete=models.DO_NOTHING)
     lead_pax_name = models.CharField(max_length=100, blank=True, null=True)
     lead_pax_number = models.CharField(max_length=100, blank=True, null=True)
     adt_pax = models.DecimalField(max_digits=10, decimal_places=2,default=0)

@@ -38,8 +38,8 @@ def home(request):
     # print(gp)
     if request.user.is_staff:
         all_arrivals = ArivalTable.objects.count()
-        all_companies = CompanyFullKYC.objects.count()
-        kyc_companies = CompanyFullKYC.objects.filter(kyc_status=True).count()
+        all_companies = NewCompanyRegistration.objects.count()
+        kyc_companies = NewCompanyRegistration.objects.filter(kyc_status=True).count()
 
         sales_Agency = ArivalTable.objects.values('agency_name__company_kyc__company_name').annotate(
             total_inv_amount=Sum('inv_amount')).order_by('-total_inv_amount')[:5]
@@ -191,11 +191,8 @@ def profileedit(request, pk):
 def newcompanyregistration(request):
     statf_data = StaffDetails.objects.get(username=request.user)
     form = NewCompanyRegistrationForm()
-    companies = CompanyFullKYC.objects.all()
+    # companies = NewCompanyRegistration.objects.all()
     if request.method == 'POST':
-        # comp_reg = request.POST.get('company_name')
-        # company, created = CompanyFullKYC.objects.get_or_create(
-        #     company_name=comp_reg)
         form = NewCompanyRegistrationForm(request.POST)
         if form.is_valid():
             comp_regs = form.save(commit=False)
@@ -204,7 +201,7 @@ def newcompanyregistration(request):
             form.save()
             return redirect('newcomp')
     context = {
-        'companies': companies,
+        # 'companies': companies,
         'form': form,
         'staff_data': statf_data,
 
