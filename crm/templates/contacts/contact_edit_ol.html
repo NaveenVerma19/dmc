@@ -10,8 +10,10 @@
           <li class="breadcrumb-item">
             <a href="{% url 'home' %}">Home</a>
           </li>
-          <li class="breadcrumb-item"><a href="{% url 'newcomp' %}"> New Company </a></li>
-          <li class="breadcrumb-item active">Edit New Company </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'allcontact' %} ">Contacts</a>
+          </li>
+          <li class="breadcrumb-item active">Edit Contact</li>
         </ol>
       </nav>
     </div>
@@ -22,13 +24,13 @@
         {% comment %} <div class="col-xl-4">
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-              <img src="{{ company_data.avatar.url }}" alt="Profile" class="rounded-circle" />
-              <h2>{{ company_data.company_name }}</h2>
-              <h5>{{ company_data.person_name }}</h5>
-              <h5>{{ company_data.person_phone }}</h5>
-              <p class="p-0 m-0 text-center">{{ company_data.company_address }}
-                {{ company_data.company_city }} {{ company_data.company_state }}
-                {{ company_data.company_pincode }}</p>
+              <img src="{{ contact_data.contact_card.url }}" alt="Profile" class="rounded-circle" />
+              <h2>{{ contact_data.company_name }}</h2>
+              <h5>{{ contact_data.person_name }}</h5>
+              <h5>{{ contact_data.person_phone }}</h5>
+              <p class="p-0 m-0 text-center">{{ contact_data.company_address }}
+                {{ contact_data.company_city }} {{ contact_data.company_state }}
+                {{ contact_data.company_pincode }}</p>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -45,15 +47,31 @@
               <!-- Profile Edit Section -->
               <ul class="nav nav-tabs nav-tabs-bordered">
                 <li class="nav-item p-0">
-                  <button class="nav-link active p-0 m-0" data-bs-toggle="tab" data-bs-target="#profile-overview"><a href="{% url 'newcomp' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Back" class="pe-3"><i class="bi bi-box-arrow-left"></i></a>Edit Company</button>
+                  <button class="nav-link active p-0 m-0" data-bs-toggle="tab" data-bs-target="#profile-overview"><a href="{% url 'allcontactol' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Back" class="pe-3"><i class="bi bi-box-arrow-left"></i></a>Edit Contacts</button>
                 </li>
               </ul>
               <div class="tab-pane fade show active profile-edit pt-3">
                 <!-- Profile Edit Form -->
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
 
-                  {% for fields in form %}           
+                  <div class="row mb-3">
+                    <label for="company_name" class="col-md-4 col-lg-3 col-form-label">Company Name Field by User</label>
+                    <div class="col-md-8 col-lg-9">{{ contact_data.company_name }}</div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="company_name" class="col-md-4 form-label">Company Name</label>
+                    <input typye="list" class="col-md-8 form-control" name="company_name" id="company_name" list="company_list" autocomplete="off" />
+                    <datalist id="company_list">
+                      {% for company in companies %}
+                        <option value="{{ company.company_name }}">{{ company_name }}</option>
+                      {% endfor %}
+                    </datalist>
+                  </div>
+
+                  {% for fields in form %}
+                  {% if forloop.counter > 1 %}
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">
                         {{ fields.label }}
@@ -63,7 +81,15 @@
                       </label>
                       <div class="col-md-8 col-lg-9">{{ fields }}</div>
                     </div>
+                    {% endif %}
                   {% endfor %}
+
+                  <div class="row mb-3">
+                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Visiting Card Attached</label>
+                    <div class="col-md-8 col-lg-9">
+                      <a href="{{ contact_data.contact_card.url }}" target="_blank">Visiting Card</a>
+                    </div>
+                  </div>
 
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary">Save Changes</button>

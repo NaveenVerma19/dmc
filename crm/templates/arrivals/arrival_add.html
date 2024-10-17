@@ -36,8 +36,17 @@
                   {% for fields in form %}
                     {% if forloop.counter > 0 %}
                       <div class="row mb-3">
-                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">{{ fields.label }}</label>
-                        <div class="col-md-8 col-lg-9">{{ fields }}</div>
+                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">
+                          {{ fields.label }}
+                          {% if fields.field.required %}
+                          <span class="required text-danger">*</span>
+                        {% endif %}
+                        
+                        </label>
+                        <div class="col-md-8 col-lg-9">{{ fields }}
+                          <br>
+                          {{ fields.help_text }}
+                        </div>
                       </div>
                     {% endif %}
                   {% endfor %}

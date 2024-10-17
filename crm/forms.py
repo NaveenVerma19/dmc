@@ -21,9 +21,9 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactTable
         fields = '__all__'
-        exclude = ['creator', 'editor', 'company_name']
+        exclude = ['creator', 'editor',]
         widgets = {
-            # 'company_name': forms.Select(attrs={"class": "form-control"}),
+            'company_name': forms.Select(attrs={"class": "form-control"}),
             'person_name': forms.TextInput(attrs={"class": "form-control"}),
             'person_phone': forms.TextInput(attrs={"class": "form-control"}),
             'person_email': forms.EmailInput(attrs={"class": "form-control"}),
@@ -33,8 +33,11 @@ class ContactForm(forms.ModelForm):
             'contact_city': forms.TextInput(attrs={"class": "form-control"}),
             'contact_state': forms.Select(attrs={"class": "form-control"}),
             'contact_pincode': forms.TextInput(attrs={"class": "form-control"}),
-            'cat_client': forms.Select(attrs={"class": "form-control"}),
-            'focus_area': forms.Select(attrs={"class": "form-control"}),
+            'country': forms.TextInput(attrs={"class": "form-control"}),
+            'dob': forms.DateInput(attrs={"class": "form-control" , 'type': 'date'}),
+            'anniversary': forms.DateInput(attrs={"class": "form-control",  'type': 'date'}),
+            'cat_client': forms.CheckboxSelectMultiple(attrs={"class": "form-check, form-check-inline", "type":"checkbox" }),
+            'focus_area': forms.CheckboxSelectMultiple(attrs={"class": "form-check, form-check-inline","type":"checkbox"}),
             'contact_card': forms.FileInput(attrs={"class": "form-control"}),
         }
         labels = {
@@ -48,10 +51,56 @@ class ContactForm(forms.ModelForm):
             'contact_city': 'City',
             'contact_state': 'State',
             'contact_pincode': 'Pincode',
-            'cat_client': 'Client Category',
+            'country': 'Country',
+            'dob': 'DOB',
+            'anniversary': 'Anniversary',
+            'cat_client': 'Category of Client ',
             'focus_area': 'Focuse Area',
             'contact_card': 'Visiting Card',
         }
+
+class ContactIndividualForm(forms.ModelForm):
+    class Meta:
+        model = IndividualContactTable
+        fields = '__all__'
+        exclude = ['creator', 'editor',]
+        widgets = {
+            'company_name': forms.TextInput(attrs={"class": "form-control"}),
+            'person_name': forms.TextInput(attrs={"class": "form-control"}),
+            'person_phone': forms.TextInput(attrs={"class": "form-control"}),
+            'person_email': forms.EmailInput(attrs={"class": "form-control"}),
+            'contact_designation': forms.TextInput(attrs={"class": "form-control"}),
+            'contact_local_area1': forms.TextInput(attrs={"class": "form-control"}),
+            'contact_local_area2': forms.TextInput(attrs={"class": "form-control"}),
+            'contact_city': forms.TextInput(attrs={"class": "form-control"}),
+            'contact_state': forms.Select(attrs={"class": "form-control"}),
+            'contact_pincode': forms.TextInput(attrs={"class": "form-control"}),
+            'country': forms.TextInput(attrs={"class": "form-control"}),
+            'dob': forms.DateInput(attrs={"class": "form-control" , 'type': 'date'}),
+            'anniversary': forms.DateInput(attrs={"class": "form-control",  'type': 'date'}),
+            'cat_client': forms.CheckboxSelectMultiple(attrs={"class": "form-check, form-check-inline", "type":"checkbox" }),
+            'focus_area': forms.CheckboxSelectMultiple(attrs={"class": "form-check, form-check-inline","type":"checkbox"}),
+            'contact_card': forms.FileInput(attrs={"class": "form-control"}),
+        }
+        labels = {
+            'company_name': 'Company Name',  # Change the label for the 'company_name' field
+            'person_name': 'Person Name',
+            'contact_designation': 'Designation',
+            'person_phone': 'Phone No',
+            'person_email': 'Email ID',
+            'contact_local_area1': 'Local Area 1',
+            'contact_local_area2': 'Local Area 2',
+            'contact_city': 'City',
+            'contact_state': 'State',
+            'contact_pincode': 'Pincode',
+            'country': 'Country',
+            'dob': 'DOB',
+            'anniversary': 'Anniversary',
+            'cat_client': 'Category of Client ',
+            'focus_area': 'Focuse Area',
+            'contact_card': 'Visiting Card',
+        }
+
 
     # def __init__(self, *args, **kwargs):
     #     super(ContactForm, self).__init__(*args, **kwargs)
@@ -134,6 +183,7 @@ class ArivalForm(forms.ModelForm):
             'inv_num': 'Inv Num',
             'inv_date': 'Inv Date',
             'currency': 'Currency',
+            'currency_rate' : 'Currency Rate',
             'inv_amount': 'Inv Amount',
             'payment_status': 'Payment Status',
             'folder_link': 'Folder Link',
@@ -155,6 +205,10 @@ class ArivalForm(forms.ModelForm):
             'ground_partner_remark': 'Ground Partner Remark',
             'sales_remark': 'Sales Remark',
             'gurantee': 'Gurantee',
+        }
+
+        help_texts = {
+            'currency_rate': 'Please enter currency rate related to USD like :- If your invoice amount is in INR and 500, and currency rate is 1 USD = 84.07 INR, You enter 84.07 only, so that in USD amount will be 5.95 USD ',
         }
 
 
@@ -224,6 +278,12 @@ class NewCompanyRegistrationForm(forms.ModelForm):
             'person_phone': 'Phone',
             'person_email': 'Email',
             'person_designation': 'Designation'}
+        
+    def __init__(self, *args, **kwargs):
+        super(NewCompanyRegistrationForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            # Form is being used to edit an existing instance
+            self.fields['company_name'].disabled = True
 
 
 class CompanyKYCForm(ModelForm):
@@ -249,6 +309,14 @@ class CompanyKYCForm(ModelForm):
             'company_email': forms.EmailInput(attrs={"class": "form-control"}),
             'company_landline': forms.TextInput(attrs={"class": "form-control"}),
             'company_Affiliations': forms.Select(attrs={"class": "form-control"}),
+            'introduced_by': forms.TextInput(attrs={"class": "form-control"}),
+            'team_size': forms.TextInput(attrs={"class": "form-control"}),
+            'relationship_manager': forms.TextInput(attrs={"class": "form-control"}),
+            'rating': forms.TextInput(attrs={"class": "form-control"}),
+            'productivity_previous': forms.TextInput(attrs={"class": "form-control"}),
+            'productivity_second_previous': forms.TextInput(attrs={"class": "form-control"}),
+            'cat_client': forms.CheckboxSelectMultiple(attrs={"class": "form-check, form-check-inline", "type":"checkbox" }),
+            'focus_area': forms.CheckboxSelectMultiple(attrs={"class": "form-check, form-check-inline","type":"checkbox"}),
         }
         labels = {
             'company_kyc': ' Company Name',
@@ -267,7 +335,15 @@ class CompanyKYCForm(ModelForm):
             'company_pincode': 'Pincode',
             'company_email': 'Email ID',
             'company_landline': 'Landline',
-            'company_Affiliations': 'Affiliations', }
+            'company_Affiliations': 'Affiliations',
+            'introduced_by': 'Introduced By',
+            'team_size': 'Team Size',
+            'relationship_manager': 'Relationship Manager',
+            'rating': 'Rating',
+            'productivity_previous': 'Productivity Last FY',
+            'productivity_second_previous': 'Productivity Second Last FY',
+            'cat_client': 'Category of Clients',
+            'focus_area': 'Focus Area' }
 
     def __init__(self, *args, **kwargs):
         super(CompanyKYCForm, self).__init__(*args, **kwargs)

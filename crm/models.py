@@ -20,18 +20,18 @@ class State(models.Model):
 
 
 class StaffDetails(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_full_name = models.CharField(max_length=150, default='Test')
-    job= models.CharField(max_length=255, blank=True , default='staff')
-    email = models.CharField(max_length=200, blank=True, default="a@gmail.com")
-    phone = models.CharField(max_length=10, blank=True, default=123)
+    username = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user_full_name = models.CharField(max_length=150)
+    job= models.CharField(max_length=255,)
+    email = models.CharField(max_length=200)
+    phone = models.CharField(max_length=10)
     bio = models.TextField(null=True) 
-    address = models.CharField(max_length=500, blank=True)
-    city = models.CharField(max_length=200, blank=True)
+    address = models.CharField(max_length=500)
+    city = models.CharField(max_length=200)
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
-    pincode = models.CharField(max_length=6, blank=True)
+    pincode = models.CharField(max_length=6)
     
-    avatar = models.ImageField(null=True, default="avatar.svg")
+    avatar = models.ImageField(null=True, default="avatar.svg", blank=True)
 
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -58,12 +58,12 @@ class StaffDetails(models.Model):
 class NewCompanyRegistration(models.Model):
     creator = models.ForeignKey(User, related_name='newcreator',on_delete=models.SET_NULL, null=True, blank=True)
     updater = models.ForeignKey(User, related_name="updater", on_delete=models.SET_NULL, null=True, blank=True)
-    company_name = models.CharField(max_length=255, null=True, blank=True)
-    gst_number = models.CharField(max_length=16, blank=True, null=True)
+    company_name = models.CharField(max_length=255, null=True,)
+    gst_number = models.CharField(max_length=16, blank=True)
     company_address = models.CharField(max_length=200)
-    company_city = models.CharField(max_length=100, blank=True)
+    company_city = models.CharField(max_length=100)
     company_state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
-    company_pincode = models.CharField(max_length=6, blank=True)
+    company_pincode = models.CharField(max_length=6)
     person_name = models.CharField(max_length=200)
     person_phone = models.CharField(max_length=10)
     person_email = models.EmailField(max_length=100)
@@ -103,36 +103,6 @@ class Affiliations(models.Model):
     def __str__(self):
         return self.affiliations
     
-class CompanyKYCDetails(models.Model):
-    creator = models.ForeignKey(User, related_name='creator',on_delete=models.SET_NULL, null=True, blank=True)
-    editor = models.ForeignKey(User, related_name="editor", on_delete=models.SET_NULL, null=True, blank=True)
-    company_kyc = models.ForeignKey(NewCompanyRegistration, on_delete=models.DO_NOTHING)
-    company_branch = models.CharField(max_length=150)    
-    Constitution = models.CharField(max_length=255)
-    office_role = models.ForeignKey(OfficeRole, on_delete=models.SET_NULL, null=True)
-    pancard_no = models.CharField(max_length=255)
-    pancard_file = models.ImageField(null=True, default="file.png")
-    gstin = models.CharField(max_length=255)
-    gstin_file = models.ImageField(null=True, default="file.png")
-    msme_no = models.CharField(max_length=255)
-    msme_file = models.ImageField(null=True, default="file.png")
-    company_reg_address = models.CharField(max_length=255)
-    company_city = models.CharField(max_length=255)
-    company_state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
-    company_pincode = models.CharField(max_length=255)
-    company_email = models.CharField(max_length=255)
-    company_landline = models.CharField(max_length=255)
-    company_Affiliations = models.ForeignKey(Affiliations, on_delete=models.SET_NULL, null=True)
-
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-updated', '-created']
-
-    def __str__(self):
-        return self.company_kyc.company_name
-    
 class FocusArea(models.Model):
     focus_area = models.CharField(max_length=200)
     
@@ -158,24 +128,68 @@ class CategoryClients(models.Model):
         return self.category_clients
 
 
+    
+class CompanyKYCDetails(models.Model):
+    creator = models.ForeignKey(User, related_name='creator',on_delete=models.SET_NULL, null=True, blank=True)
+    editor = models.ForeignKey(User, related_name="editor", on_delete=models.SET_NULL, null=True, blank=True)
+    company_kyc = models.ForeignKey(NewCompanyRegistration, on_delete=models.DO_NOTHING)
+    company_branch = models.CharField(max_length=150)    
+    Constitution = models.CharField(max_length=255)
+    office_role = models.ForeignKey(OfficeRole, on_delete=models.SET_NULL, null=True)
+    pancard_no = models.CharField(max_length=255)
+    pancard_file = models.ImageField(null=True, default="file.png")
+    gstin = models.CharField(max_length=255)
+    gstin_file = models.ImageField(null=True, default="file.png")
+    msme_no = models.CharField(max_length=255, blank=True)
+    msme_file = models.ImageField(null=True, default="file.png", blank=True)
+    company_reg_address = models.CharField(max_length=255)
+    company_city = models.CharField(max_length=255)
+    company_state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
+    company_pincode = models.CharField(max_length=255)
+    company_email = models.CharField(max_length=255)
+    company_landline = models.CharField(max_length=255)
+    company_Affiliations = models.ForeignKey(Affiliations, on_delete=models.SET_NULL, null=True)
+    introduced_by = models.CharField(max_length=150, blank=True)
+    team_size = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    relationship_manager = models.CharField(max_length=250, blank=True)
+    rating = models.DecimalField(max_digits=1, decimal_places=0, default=1)
+    productivity_previous = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
+    productivity_second_previous = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
+    cat_client = models.ManyToManyField (CategoryClients,blank=True)
+    focus_area = models.ManyToManyField(FocusArea, blank=True)
+
+
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-updated', '-created']
+
+    def __str__(self):
+        return self.company_kyc.company_name
+    
+
 
 class ContactTable(models.Model):
     creator = models.ForeignKey(User, related_name='contactcreator',on_delete=models.SET_NULL, null=True, blank=True)
     editor = models.ForeignKey(User, related_name="contacteditor", on_delete=models.SET_NULL, null=True, blank=True)
     company_name = models.ForeignKey(
-        NewCompanyRegistration, on_delete=models.CASCADE)
+        NewCompanyRegistration, on_delete=models.DO_NOTHING)
     person_name = models.CharField(max_length=200)
     contact_designation = models.CharField(max_length=255)
     person_phone = models.CharField(max_length=10)
     person_email = models.EmailField(max_length=100)
-    contact_local_area1 = models.CharField(max_length=255, blank=True)
+    contact_local_area1 = models.CharField(max_length=255)
     contact_local_area2 = models.CharField(max_length=255, blank=True )
-    contact_city = models.CharField(max_length=255, blank=True)
-    contact_state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
-    contact_pincode = models.CharField(max_length=255, blank=True)
-    cat_client = models.ForeignKey(CategoryClients, on_delete=models.SET_NULL,null=True,blank=True)
-    focus_area = models.ForeignKey(FocusArea, on_delete=models.SET_NULL,null=True,blank=True)
-    contact_card = models.ImageField(null=True,  default="avatar.svg")
+    contact_city = models.CharField(max_length=255)
+    contact_state = models.ForeignKey(State, on_delete=models.DO_NOTHING)
+    contact_pincode = models.CharField(max_length=255)
+    country = models.CharField(max_length=225)
+    dob = models.DateField(blank=True)
+    anniversary = models.DateField(blank=True)
+    cat_client = models.ManyToManyField(CategoryClients, blank=True)
+    focus_area = models.ManyToManyField(FocusArea, blank=True)
+    contact_card = models.ImageField(null=True,  default="avatar.svg", blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -184,6 +198,37 @@ class ContactTable(models.Model):
 
     def __str__(self):
         return self.person_name
+    
+
+class IndividualContactTable(models.Model):
+    company_name = models.CharField(max_length=225)
+    person_name = models.CharField(max_length=200)
+    contact_designation = models.CharField(max_length=255)
+    person_phone = models.CharField(max_length=10)
+    person_email = models.EmailField(max_length=100)
+    contact_local_area1 = models.CharField(max_length=255)
+    contact_local_area2 = models.CharField(max_length=255, blank=True )
+    contact_city = models.CharField(max_length=255)
+    contact_state = models.ForeignKey(State, on_delete=models.DO_NOTHING)
+    contact_pincode = models.CharField(max_length=255)
+    country = models.CharField(max_length=225)
+    dob = models.DateField(blank=True, null=True)
+    anniversary = models.DateField(blank=True, null=True)
+    cat_client = models.ManyToManyField(CategoryClients, blank=True)
+    focus_area = models.ManyToManyField(FocusArea, blank=True)
+    contact_card = models.ImageField(null=True,  default="avatar.svg", blank=True)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-updated', '-created']
+
+    def __str__(self):
+        return self.person_name
+
+
+
+
 
 
 class PaymentStatus(models.Model):
@@ -267,9 +312,9 @@ class ArivalTable(models.Model):
     creator = models.ForeignKey(User, related_name='arivalcreator',on_delete=models.SET_NULL, null=True, blank=True)
     editor = models.ForeignKey(User, related_name="arivaleditor", on_delete=models.SET_NULL, null=True, blank=True)
     sub_location = models.ForeignKey(
-        SubLocation, on_delete=models.DO_NOTHING, null=True)
+        SubLocation, on_delete=models.DO_NOTHING)
     location = models.ForeignKey(
-        Location, on_delete=models.DO_NOTHING, null=True)
+        Location, on_delete=models.DO_NOTHING)
     staff = models.ForeignKey(StaffDetails, on_delete=models.DO_NOTHING, null=True)
     backend_staff = models.ForeignKey(
         BackendStaff, on_delete=models.DO_NOTHING, null=True)
@@ -277,23 +322,23 @@ class ArivalTable(models.Model):
     origin_date = models.DateField()
     arival_date = models.DateField()
     depart_date = models.DateField()
-    file_Ref = models.CharField(max_length=100, blank=True, null=True)
+    file_Ref = models.CharField(max_length=100)
     ground_partner_file_ref = models.CharField(
         max_length=100, blank=True, null=True)
     agency_name = models.ForeignKey(
         CompanyKYCDetails, on_delete=models.DO_NOTHING)
     lead_pax_name = models.CharField(max_length=100, blank=True, null=True)
     lead_pax_number = models.CharField(max_length=100, blank=True, null=True)
-    adt_pax = models.DecimalField(max_digits=10, decimal_places=2,default=0)
-    child_pax = models.DecimalField(max_digits=10, decimal_places=2,default=0)
+    adt_pax = models.DecimalField(max_digits=10, decimal_places=0,default=0)
+    child_pax = models.DecimalField(max_digits=10, decimal_places=0,default=0)
     adt_cost = models.DecimalField(max_digits=10, decimal_places=2,default=0)
     child_cost = models.DecimalField(max_digits=10, decimal_places=2,default=0)
-    nights = models.DecimalField(max_digits=10, decimal_places=2,default=0)
+    nights = models.DecimalField(max_digits=10, decimal_places=0,default=0)
     quality_check_by = models.CharField(max_length=100, blank=True, null=True)
     inv_num = models.CharField(max_length=100, blank=True, null=True)
     inv_date = models.DateField(null=True, blank=True)
     currency = models.ForeignKey(
-        Currency, on_delete=models.DO_NOTHING, null=True)
+        Currency, on_delete=models.DO_NOTHING,)
     currency_rate = models.DecimalField(max_digits=10, decimal_places=2,default=0)
     inv_amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
     payment_status = models.ForeignKey(

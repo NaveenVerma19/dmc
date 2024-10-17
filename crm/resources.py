@@ -21,6 +21,12 @@ class ContactTableResource(resources.ModelResource):
     class meta:
         model = ContactTable
 
+# ContactTable Individual
+class IndividualContactTableResource(resources.ModelResource):
+    class meta:
+        model = IndividualContactTable
+
+
 # FocusArea
 class FocusAreaResource(resources.ModelResource):
     class meta:

@@ -100,6 +100,20 @@ class ContacttableAdmin(ImportExportModelAdmin):
                     'created']
 
 
+# ContactTable Individual
+@admin.register(IndividualContactTable)
+class IndividualContactTableAdmin(ImportExportModelAdmin):
+    list_display = ['company_name',
+                    'id',
+                    'person_name',
+                    'person_phone',
+                    'person_email',
+                    'contact_city',
+                    'updated',
+                    'created']
+
+
+
 # admin.site.register(PaymentStatus)
 @admin.register(PaymentStatus)
 class PaymentStatusAdmin(ImportExportModelAdmin):

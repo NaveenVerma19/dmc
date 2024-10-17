@@ -56,8 +56,8 @@
               </ul>
               <div class="tab-content pt-2">
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                  <h5 class="card-title">About</h5>
-                  <p class="small fst-italic">{{ contact_data.contact_city }}</p>
+                  {% comment %} <h5 class="card-title">About</h5>
+                  <p class="small fst-italic">{{ contact_data.contact_city }}</p> {% endcomment %}
                   <h5 class="card-title">
                     Profile Details{% if perms.crm.change_contacttable %}
                       <a href="{% url 'editcontact' contact_data.id %}"><i class="bi bi-pencil-square" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
@@ -113,6 +113,27 @@
                     <div class="col-lg-3 col-md-4 label">Country</div>
                     <div class="col-lg-9 col-md-8">India</div>
                   </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Category of Client</div>
+                    <div class="col-lg-9 col-md-8">
+                      {% for  cat in cat_client  %}
+                      {{forloop.counter}}.{{ cat }}  | 
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Focuse Area</div>
+                    <div class="col-lg-9 col-md-8">
+                      {% for  focus in focus_area  %}
+                      {{forloop.counter}}.{{ focus }} | 
+                      {% endfor %}
+                      </div>
+                  </div>
+
+                  
+
                 </div>
               </div>
             </div>

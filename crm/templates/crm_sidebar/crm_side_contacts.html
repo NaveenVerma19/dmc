@@ -16,6 +16,14 @@
         <a href="{% url 'allcontact' %}"><i class="bi bi-person-lines-fill" style="font-size: 20px;"></i><span>Contact Table</span></a>
       </li>
     {% endif %}
+
+    {% if perms.crm.view_individualcontacttable %}
+      <li>
+        <a href="{% url 'allcontactol' %}">
+          <i class="bi bi-person-lines-fill" style="font-size: 20px;"></i>
+        <span>Open Link Individuals Table</span></a>
+      </li>
+    {% endif %}
   </ul>
 </li>
 <!-- End Tables Nav -->

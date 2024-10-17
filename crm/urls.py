@@ -36,6 +36,15 @@ urlpatterns = [
          views.deletecontact, name='deletecontact'),
 
 
+    # Company Contacts Open LinksURLS
+    path('contact-add-ol', views.addindividualol,
+         name='addcontactol'),
+    path('contact-edit-ol/<str:pk>', views.editindividual, name='editcontactol'),
+    path('contact-table-ol', views.allindividual, name='allcontactol'),
+    path('contact-delete-ol/<str:pk>',
+         views.deleteindividual, name='deletecontactol'),
+
+
     # Arrivals URLS
     path('arrival-add', views.addarrival, name='addarrival'),
     path('arrival-edit/<str:pk>', views.editarrival, name='editarrival'),
@@ -55,9 +64,9 @@ urlpatterns = [
     path('feedback-table', views.allfeedback, name='allfeedback'),
     path('feedback-delete/<str:pk>',
          views.deletefeedback, name='deletefeedback'),
-     path('feedback-status/<str:pk>',
+    path('feedback-status/<str:pk>',
          views.statusfeedback, name='statusfeedback'),
-         
+
 
 
 
@@ -74,8 +83,8 @@ urlpatterns = [
     path('page-faq', views.faqpage, name='faqpage'),
 
     # Charts
-#     path('pie-charts', views.piechart, name='piechart'),
-#     path('apex-chart', views.apexchart, name='apexchart')
+    #     path('pie-charts', views.piechart, name='piechart'),
+    #     path('apex-chart', views.apexchart, name='apexchart')
 
 
 
