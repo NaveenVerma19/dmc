@@ -26,55 +26,55 @@ def home(request):
     # all_companies = CompanyFullKYC.objects.count()
     # kyc_companies = CompanyFullKYC.objects.filter(kyc_status=True).count()
 
-    total_sale = ArivalTable.objects.aggregate(
+    total_sale = all_arrival_data.aggregate(
         total=Sum(F('inv_amount') / F('currency_rate'))
     )['total']
 
-    total_pur = ArivalTable.objects.aggregate(
+    total_pur = all_arrival_data.aggregate(
         total=Sum(F('purchase_amt') / F('currency_rate'))
     )['total']
 
     gps = int(total_sale) - int(total_pur)
     # print(gp)
     if request.user.is_staff:
-        all_arrivals = ArivalTable.objects.count()
+        all_arrivals = all_arrival_data.count()
         all_companies = NewCompanyRegistration.objects.count()
         kyc_companies = NewCompanyRegistration.objects.filter(
             kyc_status=True).count()
 
-        sales_Agency = ArivalTable.objects.values('agency_name__company_kyc__company_name').annotate(
+        sales_Agency = all_arrival_data.values('agency_name__company_kyc__company_name').annotate(
             total_inv_amount=Sum('inv_amount')).order_by('-total_inv_amount')[:5]
 
-        sales_Location = ArivalTable.objects.values('sub_location__country_name').annotate(
+        sales_Location = all_arrival_data.values('sub_location__country_name').annotate(
             total_inv_amount=Sum('inv_amount')).order_by('-total_inv_amount')[:5]
 
-        total_sale = ArivalTable.objects.aggregate(
+        total_sale = all_arrival_data.aggregate(
             total=Sum(F('inv_amount') / F('currency_rate'))
         )['total']
 
-        total_pur = ArivalTable.objects.aggregate(
+        total_pur = all_arrival_data.aggregate(
             total=Sum(F('purchase_amt') / F('currency_rate'))
         )['total']
 
         gps = int(total_sale) - int(total_pur)
 
     else:
-        all_arrivals = ArivalTable.objects.filter(creator=request.user).count()
+        all_arrivals = all_arrival_data.filter(creator=request.user).count()
         all_companies = ContactTable.objects.filter(
             creator=request.user).values('company_name').distinct().count()
         kyc_companies = 0
 
-        sales_Agency = ArivalTable.objects.filter(creator=request.user).values('agency_name__company_kyc__company_name').annotate(
+        sales_Agency = all_arrival_data.filter(creator=request.user).values('agency_name__company_kyc__company_name').annotate(
             total_inv_amount=Sum('inv_amount')).order_by('-total_inv_amount')[:5]
 
-        sales_Location = ArivalTable.objects.filter(creator=request.user).values('sub_location__country_name').annotate(
+        sales_Location = all_arrival_data.filter(creator=request.user).values('sub_location__country_name').annotate(
             total_inv_amount=Sum('inv_amount')).order_by('-total_inv_amount')[:5]
 
-        total_sale = ArivalTable.objects.filter(creator=request.user).aggregate(
+        total_sale = all_arrival_data.filter(creator=request.user).aggregate(
             total=Sum(F('inv_amount') / F('currency_rate'))
         )['total']
 
-        total_pur = ArivalTable.objects.filter(creator=request.user).aggregate(
+        total_pur = all_arrival_data.filter(creator=request.user).aggregate(
             total=Sum(F('purchase_amt') / F('currency_rate'))
         )['total']
 
@@ -93,17 +93,17 @@ def home(request):
 
     # print("hello")
     # Aggregate data by salesperson
-    sales_data = ArivalTable.objects.values('staff__user_full_name').annotate(
+    sales_data = all_arrival_data.values('staff__user_full_name').annotate(
         total_inv_amount=Sum('inv_amount')).order_by('staff__user_full_name')
     # print("sales_data")
     # Format the data into the desired structure
     data = [{'name': entry['staff__user_full_name'], 'value': float(
-        entry['total_inv_amount'])} for entry in sales_data]
+        entry['total_inv_amount'])} for entry in sales_data][:5]
     # print(data)
     names = [item['name'] for item in data]
     values = [item['value'] for item in data]
 
-    pur_data = ArivalTable.objects.values('staff__user_full_name').annotate(
+    pur_data = all_arrival_data.values('staff__user_full_name').annotate(
         total_inv_amount=Sum('purchase_amt')).order_by('staff__user_full_name')
 
     data2 = [{'name': entry['staff__user_full_name'],
@@ -149,6 +149,17 @@ def home(request):
 
     return render(request, 'dashboard/dashboard_home.html', context)
 
+
+
+@login_required(login_url='loginpage')
+def dasboardlooker(request):
+    statf_data = StaffDetails.objects.get(username=request.user)
+    
+    context = {
+        'staff_data': statf_data,
+     }
+    
+    return render(request, 'dashboard/dashboard_looker.html', context)
 
 @login_required(login_url='loginpage')
 def profilepage(request):
@@ -666,43 +677,43 @@ def addindividualol(request):
     return render(request, 'contacts/contact_add_ol.html', context)
 
 
-@login_required(login_url='loginpage')
-def editindividual(request, pk):
-    statf_data = StaffDetails.objects.get(username=request.user)
-    contact_data = IndividualContactTable.objects.get(id=pk)
-    companies = NewCompanyRegistration.objects.all()
+# @login_required(login_url='loginpage')
+# def editindividual(request, pk):
+#     statf_data = StaffDetails.objects.get(username=request.user)
+#     contact_data = IndividualContactTable.objects.get(id=pk)
+#     companies = NewCompanyRegistration.objects.all()
 
-    if request.method == "POST":
-        # Get or create the company before binding the form
-        comp_reg = request.POST.get('company_name')
-        company, created = NewCompanyRegistration.objects.get_or_create(company_name=comp_reg)
+#     if request.method == "POST":
+#         # Get or create the company before binding the form
+#         comp_reg = request.POST.get('company_name')
+#         company, created = NewCompanyRegistration.objects.get_or_create(company_name=comp_reg)
         
-        # Create a mutable copy of the POST data to update the company_name
-        post_data = request.POST.copy()
-        post_data['company_name'] = company.id
+#         # Create a mutable copy of the POST data to update the company_name
+#         post_data = request.POST.copy()
+#         post_data['company_name'] = company.id
 
-        # Bind the form with the modified data and the instance
-        form = ContactForm(post_data, request.FILES, instance=contact_data)
-        if form.is_valid():
-            # Save the form with the existing instance
-            individual_contact = form.save(commit=False)
-            individual_contact.editor = request.user
-            individual_contact.save()
-            form.save_m2m()
+#         # Bind the form with the modified data and the instance
+#         form = ContactForm(post_data, request.FILES, instance=contact_data)
+#         if form.is_valid():
+#             # Save the form with the existing instance
+#             individual_contact = form.save(commit=False)
+#             individual_contact.editor = request.user
+#             individual_contact.save()
+#             form.save_m2m()
 
-            return redirect('allcontact')
-        else:
-            print('Form errors:', form.errors)
-    else:
-        form = ContactForm(instance=contact_data)
+#             return redirect('allcontact')
+#         else:
+#             print('Form errors:', form.errors)
+#     else:
+#         form = ContactForm(instance=contact_data)
 
-    context = {
-        'form': form,
-        'staff_data': statf_data,
-        'contact_data': contact_data,
-        'companies': companies,
-    }
-    return render(request, 'contacts/contact_edit_ol.html', context)
+#     context = {
+#         'form': form,
+#         'staff_data': statf_data,
+#         'contact_data': contact_data,
+#         'companies': companies,
+#     }
+#     return render(request, 'contacts/contact_edit_ol.html', context)
 
 
 

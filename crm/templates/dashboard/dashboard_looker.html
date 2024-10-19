@@ -1,0 +1,42 @@
+{% extends 'crm_base.html' %} {% load static %} {% block maincontant %}
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+
+    <section class="section dashboard">
+      {% if request.user.is_staff %}
+      <iframe
+        width="100%"
+        height="600"
+        src="https://lookerstudio.google.com/embed/reporting/bcf54d5e-bd4a-463c-8026-b3509833c267/page/jEf4D"
+        frameborder="0"
+        style="border: 0"
+        allowfullscreen
+        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+      ></iframe>
+
+      {% else %}
+      <iframe
+        width="100%"
+        height="600"
+        src="https://lookerstudio.google.com/embed/reporting/01aa66fd-8585-4118-9d0d-9bcb07fbfab2/page/p_omwuqmwsid"
+        frameborder="0"
+        style="border: 0"
+        allowfullscreen
+        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+      ></iframe>
+      {% endif %}
+    </section>
+  </div>
+</main>
+
+{% endblock %}

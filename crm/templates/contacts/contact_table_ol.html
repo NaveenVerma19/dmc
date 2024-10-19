@@ -79,6 +79,7 @@
                       <td class="p-1 m-0 text-center" style="font-size: 12px; max-width: 100px;">{{ item.person_email }}</td>
                       <td class="p-1 m-0" style="font-size: 12px;">{{ item.contact_city }}</td>
                       <td class="p-0 m-0 text-center">
+                        {% comment %} 
                         {% if perms.crm.change_individualcontacttable %}
                           <a class="bi bi-pencil-square" 
                             style="font-size: 20px;" 
@@ -87,7 +88,7 @@
                             title="Edit" 
                             href="{% url 'editcontactol' item.id %}"> 
                           </a>
-                        {% endif %}
+                        {% endif %}{% endcomment %}
                         {% if perms.crm.delete_individualcontacttable %}
                           <a class="bi bi-trash-fill" 
                             style="font-size: 20px;" 
@@ -97,7 +98,7 @@
                             href="{% url 'deletecontactol' item.id %}">  
                           </a>
                         {% endif %}
-                      </td>
+                      </td> 
                     </tr>
                   {% endif %}
                 {% endfor %}

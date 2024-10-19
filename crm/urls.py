@@ -2,7 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+     
+     # Dashboard links
     path('', views.home, name='home'),
+    path('looker', views.dasboardlooker, name='dashboardlooker'),
 
     path('profile-page', views.profilepage, name='profilepage'),
     path('profile-edit/<str:pk>', views.profileedit, name='profileedit'),
@@ -41,7 +44,7 @@ urlpatterns = [
     # Company Contacts Open LinksURLS
     path('contact-add-ol', views.addindividualol,
          name='addcontactol'),
-    path('contact-edit-ol/<str:pk>', views.editindividual, name='editcontactol'),
+#     path('contact-edit-ol/<str:pk>', views.editindividual, name='editcontactol'),
     path('contact-table-ol', views.allindividual, name='allcontactol'),
     path('contact-delete-ol/<str:pk>',
          views.deleteindividual, name='deletecontactol'),

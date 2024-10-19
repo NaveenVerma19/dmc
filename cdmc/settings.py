@@ -86,10 +86,10 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'HOST': '51.158.61.113',
+#         'HOST': 'excel4.space4server.com',
 #         'PORT': '3306',
 #         'USER': 'chalodmc2022_crmaj',
-#         'PASSWORD': 'chalodmc2022_crmaj',
+#         'PASSWORD': 'bCz7pdoKsk9Y',
 #         'NAME': 'chalodmc2022_crmaj',
 #     }
 # }

@@ -137,7 +137,7 @@
                               formatter: (val) => { return Math.round(val)}
                             },
                             title: {
-                              text: '$ (thousands)'
+                              text: '$'
                             }
                           },
                           fill: {
@@ -146,7 +146,7 @@
                           tooltip: {
                             y: {
                               formatter: function (val) {
-                                return '$ ' + Math.round(val) + ' thousands'
+                                return '$ ' + Math.round(val)
                               }
                             }
                           }
@@ -171,6 +171,7 @@
                       <tr>
                         <th scope="col">#</th>
                         <th scope="col">Staff</th>
+                        <th scope="col">Arrival Date</th>
                         <th scope="col">Agency Name</th>
                         <th scope="col">Inv Amount</th>
                         <th scope="col">Status</th>
@@ -182,6 +183,7 @@
                           <tr>
                             <th scope="row">{{ item.file_Ref }}</th>
                             <td>{{ item.staff }}</td>
+                            <td>{{ item.arival_date | date:"d-M-y" }}</td>
                             <td>
                               <a href="#" class="text-primary">{{ item.agency_name }}</a>
                             </td>
@@ -220,7 +222,7 @@
           {% if request.user.is_staff %}
             <div class="card">
               <div class="card-body pb-0">
-                <h5 class="card-title">All Staff's Sales</h5>
+                <h5 class="card-title">Top Five Staff's Sales</h5>
 
                 <div id="trafficChart" style="min-height: 360px;" class="echart"></div>
 

@@ -35,11 +35,11 @@
         <h1>Profile</h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item">
+            {% comment %} <li class="breadcrumb-item">
               <a href="{% url 'home' %}">Home</a>
-            </li>
+            </li> {% endcomment %}
             <li class="breadcrumb-item">
-              <a href="{% url 'allcontactol' %} ">Individual Staff</a>
+              <a href="#">Individual Staff</a>
             </li>
             <li class="breadcrumb-item active">Contact Person Dtails</li>
           </ol>
@@ -55,7 +55,8 @@
                 <!-- Bordered Tabs -->
                 <ul class="nav nav-tabs nav-tabs-bordered p-0">
                   <li class="nav-item p-0">
-                    <button class="nav-link active p-0 m-0"><a href="{% url 'allcontactol' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Back" class="pe-2"><i class="bi bi-box-arrow-left" style="font-size: 24px;"></i></a>New Contacts</button>
+                    <button class="nav-link active p-0 m-0">
+                      New Contacts</button>
                   </li>
                 </ul>
                 <div class="tab-pane fade show active profile-edit pt-3" id="profile-edit">
