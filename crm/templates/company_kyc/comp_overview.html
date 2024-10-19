@@ -145,6 +145,58 @@
                     <div class="col-lg-3 col-md-4 label">Affilation</div>
                     <div class="col-lg-9 col-md-8">{{ company_data.company_Affiliations }}</div>
                   </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Introduced By</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.introduced_by }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Team Size</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.team_size }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Relationship Manager</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.relationship_manager }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Rating</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.rating }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Productivity Last FY</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.productivity_previous }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Productivity Second Last FY</div>
+                    <div class="col-lg-9 col-md-8">{{ company_data.productivity_second_previous }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Category of Clients</div>
+                    <div class="col-lg-9 col-md-8">
+                      {% for cat_val in cat_client  %}
+                      {{ cat_val }},
+                      {% endfor %}
+                    </div>
+                  </div>
+                  
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Focus Area</div>
+                    <div class="col-lg-9 col-md-8">
+                      {% for focus_val in focus_area  %}
+                      {{ focus_val }},
+                      {% endfor %}</div>
+                  </div>
+
+
+
+
                 </div>
               </div>
             </div>

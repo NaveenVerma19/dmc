@@ -13,8 +13,10 @@ urlpatterns = [
     path('new-company-edit/<str:pk>', views.newcompanyedit, name='newcompedit'),
     path('company-overview/<str:pk>', views.companyoverview, name='compoverview'),
     path('new-company', views.allnewcompany, name='newcomp'),
+    path('new-company-pending-kyc', views.allnewcompanypendingkyc, name='newcomppendingkyc'),
     path('new-company-delete/<str:pk>',
          views.newcompanydelete, name='newcompdelete'),
+
 
     # Full KYC Company URLS
     path('company-registration', views.addcompanykyc, name='addcompanykyc'),

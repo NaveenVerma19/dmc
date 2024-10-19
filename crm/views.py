@@ -275,6 +275,52 @@ def allnewcompany(request):
     }
     return render(request, 'new_company_registration/all_new_comp.html', context)
 
+
+
+@login_required(login_url='loginpage')
+def allnewcompanypendingkyc(request):
+    statf_data = StaffDetails.objects.get(username=request.user)
+    queryset = NewCompanyRegistration.objects.filter(kyc_status="False")
+
+    # total_company = queryset.count()
+    # kyc_done = queryset.filter(kyc_status="True").count()
+    # kyc_pending = queryset.filter(kyc_status="False").count()
+
+    kyc_pending = queryset.count()
+
+    search_form = SearchForm(request.GET or None)
+    if search_form.is_valid():
+        query = search_form.cleaned_data.get('query')
+        start_date = search_form.cleaned_data.get('start_date')
+        end_date = search_form.cleaned_data.get('end_date')
+        if query:
+            queryset = queryset.filter(
+                Q(company_name__icontains=query) |
+                Q(person_name__icontains=query) |
+                Q(company_city__icontains=query) |
+                Q(gst_number__icontains=query)
+            )
+        if start_date and end_date:
+            queryset = queryset.filter(
+                updated__date__range=(start_date, end_date)
+            )
+
+    paginator = Paginator(queryset, 15)  # Show 8 items per page
+    page_number = request.GET.get('page')
+    company_data = paginator.get_page(page_number)
+    context = {
+        'company_data': company_data,
+        'staff_data': statf_data,
+        'search_form': search_form,
+        # 'total_company': total_company,
+        # 'kyc_done': kyc_done,
+        'kyc_pending': kyc_pending,
+    }
+    return render(request, 'new_company_registration/all_new_comp_kyc_pending.html', context)
+
+
+
+
 # This function is not in work
 
 
@@ -431,9 +477,13 @@ def allcompanykyc(request):
 def overviewcompanykyc(request, pk):
     statf_data = StaffDetails.objects.get(username=request.user)
     company_data = CompanyKYCDetails.objects.get(id=pk)
+    cat_client = company_data.cat_client.all()
+    focus_area = company_data.focus_area.all()
     context = {
         'company_data': company_data,
-        'staff_data': statf_data
+        'staff_data': statf_data,
+        'cat_client': cat_client,
+        'focus_area': focus_area,
     }
     return render(request, 'company_kyc/comp_overview.html', context)
 
@@ -827,9 +877,15 @@ def allarrival(request):
 def overviewarrival(request, pk):
     statf_data = StaffDetails.objects.get(username=request.user)
     arrival_data = ArivalTable.objects.get(id=pk)
+    
+    pending_amt = int(arrival_data.inv_amount) - int(arrival_data.amt_recev)
+    total_pax = int(arrival_data.adt_pax) - int(arrival_data.child_pax)
+    
     context = {
         'arrival_data': arrival_data,
-        'staff_data': statf_data
+        'staff_data': statf_data,
+        'pending_amt': pending_amt,
+        'total_pax': total_pax,
     }
     return render(request, 'arrivals/arrival_overview.html', context)
 

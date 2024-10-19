@@ -1,228 +1,338 @@
-{% extends 'crm_base.html' %}
-{% load static %}
+{% extends 'crm_base.html' %} 
 
-{% block maincontant %}
-  <main id="main" class="main">
-    <div class="pagetitle">
-      <h1>Company</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="{% url 'home' %}">Home</a>
-          </li>
-          <li class="breadcrumb-item">
-            <a href="{% url 'allarrival' %}">Arrivals</a>
-          </li>
-          <li class="breadcrumb-item active">Arrivals Details</li>
-        </ol>
-      </nav>
-    </div>
-    <!-- End Page Title -->
+{% load static %} {% block maincontant %}
 
-    <section class="section profile">
-      <div class="row">
-        <div class="col-xl-6">
-          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-            {% comment %} <img src="#" alt="Profile" class="rounded-circle" /> {% endcomment %}
-            <h2>{{ arrival_data.agency_name.company_name }}</h2>
-            <h5>{{ arrival_data.agency_staff_name }}</h5>
-            <h5>{{ arrival_data.agency_staff_email }}</h5>
-            <h5>{{ arrival_data.agency_staff_mobile }}</h5>
-            <p class="p-0 m-0 text-center fst-italic" style="font-size: 12px;">File:- {{ arrival_data.file_Ref }}
-              arrival on {{ arrival_data.arival_date }} by {{ arrival_data.staff }} to {{ arrival_data.sub_location }} having ADT {{ arrival_data.adt_pax }} CHD {{ arrival_data.child_pax }} for {{ arrival_data.nights }} nits with {{ arrival_data.inv_amount }} Rs.</p>
-          </div>
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Company</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'allarrival' %}">Arrivals</a>
+        </li>
+        <li class="breadcrumb-item active">Arrivals Details</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
 
-          <div class="card">
-            <div class="card-body pt-3">
-              <ul class="nav nav-tabs nav-tabs-bordered">
-                <li class="nav-item">
-                  <button class="nav-link active px-1"><a href="{% url 'allarrival' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Back" class="pe-3"><i class="bi bi-box-arrow-left"></i></a>Arrivals Overview</button>
-                </li>
-              </ul>
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                  {% comment %} <h5 class="card-title">About</h5>
-                  <p class="small fst-italic">{{ arrival_data.contact_city }}</p> {% endcomment %}
-                  <h5 class="card-title">
-                    Tour Details{% if perms.crm.change_arivaltable %}
-                      <a href="{% url 'editarrival' arrival_data.id %}"><i class="bi bi-pencil-square" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
-                    {% endif %}
-                  </h5>
+  <section class="section profile">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body pt-3">
+            <ul class="nav nav-tabs nav-tabs-bordered">
+              <li class="nav-item">
+                <button class="nav-link active px-1">
+                  <a
+                    href="{% url 'allarrival' %}"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Back"
+                    class="pe-3"
+                    ><i class="bi bi-box-arrow-left"></i></a
+                  >Arrivals Overview
+                  <a href="{% url 'editarrival' arrival_data.id %}"
+                        ><i
+                          class="bi bi-pencil-square ps-2"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title="Edit"
+                        ></i
+                      ></a>
+                </button>
+              </li>
+            </ul>
+            <div class="row">
+              <div class="col-xl-6">
+                <div class="tab-content pt-2">
+                  <div
+                    class="tab-pane fade show active profile-overview"
+                    id="profile-overview"
+                  >
+                    {% comment %} <h5 class="card-title">
+                      Tour Details {% if perms.crm.change_arivaltable %}
+                      <a href="{% url 'editarrival' arrival_data.id %}"
+                        ><i
+                          class="bi bi-pencil-square"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title="Edit"
+                        ></i
+                      ></a>
+                      {% endif %}
+                    </h5> {% endcomment %}
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Agency Name</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.agency_name.company_name }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Agency Name</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.agency_name.company_kyc }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Arival Date</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.arival_date }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Arival Date</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.arival_date | date:"d-M-y" }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Location</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.location }} | {{ arrival_data.sub_location }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">File Ref</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.file_Ref }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Handling Staff</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.staff }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Nights</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.nights }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Backend Staff</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.backend_staff }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Total Pax</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ total_pax }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Confirmation Date</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.confirmation_date }}</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Origin Date</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.origin_date }}
-                      {{ arrival_data.contact_local_area2 }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Location</div>
+                      <div class="col-lg-7 col-md-6">
+                        {% comment %} {{ arrival_data.location }} | {% endcomment %}
+                        {{arrival_data.sub_location }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Itinerary Submit Date</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.itinerary_submit_date }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Sub Location</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{arrival_data.sub_location }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Visa Letter Submit Date</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.visa_letter_submit_date }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Handling Staff</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.staff }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Voucher Submit Date</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.voucher_submit_date }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Backend Staff</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.backend_staff }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Package Details</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.package_details }}</div>
-                  </div>
+                    
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">CDMC Remark</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.cdmc_remark }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Currency</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.currency }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Ground Partner Remark</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.ground_partner_remark }}</div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Invoice Amount</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.inv_amount }}
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Payment Status</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.payment_status }}
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">
+                        Amount Received
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.amt_recev }}
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">
+                        Pending Payment Amount
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                       {{pending_amt}}
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">
+                        Final Payment Deadline
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.final_pmt_deadline |date:"d-M-y" }}
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Gurantee</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.gurantee }}
+                      </div>
+                    </div>
+
+                    
+
+                    
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Second Section -->
+              <div class="col-xl-6">
+                <div class="tab-content pt-2">
+                  <div
+                    class="tab-pane fade show active profile-overview"
+                    id="profile-overview"
+                  >
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Lead Pax Name</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.lead_pax_name }}
+                      </div>
+                    </div>
 
-        <div class="col-xl-6">
-          <div class="card">
-            <div class="card-body pt-3">
-              <ul class="nav nav-tabs nav-tabs-bordered">
-                <li class="nav-item">
-                  <button class="nav-link active px-1"><a href="{% url 'allarrival' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Back" class="pe-3"><i class="bi bi-box-arrow-left"></i></a>Arrivals Overview</button>
-                </li>
-              </ul>
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                  {% comment %} <h5 class="card-title">About</h5>
-                  <p class="small fst-italic">{{ arrival_data.contact_city }}</p> {% endcomment %}
-                  <h5 class="card-title">Passangers Details</h5>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Lead Pax Number</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.lead_pax_number }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Lead Pax Name</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.lead_pax_name }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Adult Pax</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.adt_pax }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Lead Pax Number</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.lead_pax_number }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Adult Cost</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.adt_cost }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Adult Pax</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.adt_pax }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Child Pax</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.child_pax }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Adult Cost</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.adt_cost }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Child Cost</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.child_cost }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Child Pax</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.child_pax }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Invoice Number</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.inv_num }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Child Cost</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.child_cost }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Invoice Date</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.inv_date | date:"d-M-y"}}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Nights</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.nights }}</div>
-                  </div>
+                    
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Quality Check By</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.quality_check_by }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">
+                        Confirmation Date
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.confirmation_date | date:"d-M-y"}}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Origin Date</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.origin_date | date:"d-M-y" }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Invoice Number</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.inv_num }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">
+                        Itinerary Submit Date
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.itinerary_submit_date | date:"d-M-y" }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Invoice Date</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.inv_date }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">
+                        Visa Letter Submit Date
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.visa_letter_submit_date | date:"d-M-y"}}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Currency</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.currency }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">
+                        Voucher Submit Date
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.voucher_submit_date | date:"d-M-y" }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Invoice Amount</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.inv_amount }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">
+                        Quality Check By
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.quality_check_by }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Payment Status</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.payment_status }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">Package Details</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.package_details }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Part Payment Amount</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.part_pmt_amt }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">CDMC Remark</div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.cdmc_remark }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Part Payment Deadline</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.part_pmt_deadline }}</div>
-                  </div>
+                    <div class="row">
+                      <div class="col-lg-5 col-md-6 label">
+                        Ground Partner Remark
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                        {{ arrival_data.ground_partner_remark }}
+                      </div>
+                    </div>
 
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Final Payment Amount</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.final_pmt_amt }}</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Part Payment Deadline</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.final_pmt_deadline }}</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-5 col-md-6 label">Gurantee</div>
-                    <div class="col-lg-7 col-md-6">{{ arrival_data.gurantee }}</div>
+                    
                   </div>
                 </div>
               </div>
@@ -230,6 +340,9 @@
           </div>
         </div>
       </div>
-    </section>
-  </main>
+
+      <!-- Second Section -->
+    </div>
+  </section>
+</main>
 {% endblock %}

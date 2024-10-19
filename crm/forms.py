@@ -3,20 +3,6 @@ from django.forms import ModelForm
 from .models import *
 
 
-# class CompanyForm(forms.ModelForm):
-#     class Meta:
-#         model = CompanyTable
-#         fields = '__all__'
-#         widgets = {
-#             'company_name': forms.TextInput(attrs={"class": "form-control"}),
-#             'company_city': forms.TextInput(attrs={"class": "form-control"}),
-#         }
-#         labels = {
-#             'company_name': 'Company Name',  # Change the label for the 'company_name' field
-#             'company_city': 'City',
-#         }
-
-
 class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactTable

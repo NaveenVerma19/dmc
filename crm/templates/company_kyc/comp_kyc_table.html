@@ -15,7 +15,7 @@
           <li class="breadcrumb-item">
             <a href="{% url 'addcompanykyc' %}">
               <i class="bi bi-file-earmark-plus-fill" style="font-size: 14px;">
-              </i><span>Add KYC</span></a>
+              </i><span>Add Company KYC</span></a>
           </li>
           {% endif %}
           
@@ -55,38 +55,38 @@
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
-                  <th scope="col" class="text-center px-2 m-0">#</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Company Name</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Constitution</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Office Role</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Pan Card</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Pan File</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">GSTIN</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">GSTIN File</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">MSMSE</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">MSMSE File</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Company Register Address</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">City</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">State</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Pincode</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Email</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Landline</th>
-                  <th scope="col" class="text-center px-2 m-0 text-nowrap">Affiliations</th>
+                  <th scope="col" class="text-start px-2 m-0">#</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Company Name</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Constitution</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Office Role</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Pan Card</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Pan File</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">GSTIN</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">GSTIN File</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">MSMSE</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">MSMSE File</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Company Registered Address</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">City</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">State</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Pincode</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Email ID</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Landline</th>
+                  <th scope="col" class="text-start px-2 m-0 text-nowrap">Affiliations</th>
                   <th scope="col" class="text-center px-2 m-0 text-nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {% for item in company_data %}
                   {% if request.user.is_staff %}
-                    <tr class="p-0 m-0">
-                      <td class="p-0 m-0 text-nowrap">
+                    <tr class="p-0 m-0 align-middle">
+                      <td class="p-0 m-0 text-start">
                         {{forloop.counter}}
                       </td>
 
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.company_kyc }}-{{ item.company_branch }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.Constitution }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.office_role }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.pancard_no }}</td>
+                      <td class="p-1 m-0 text-nowrap text-start" style="font-size: 12px; max-width: 100px;">{{ item.company_kyc }}-{{ item.company_branch }}</td>
+                      <td class="p-1 m-0 text-nowrap text-start" style="font-size: 12px; max-width: 100px;">{{ item.Constitution }}</td>
+                      <td class="p-1 m-0 text-nowrap text-start" style="font-size: 12px; max-width: 100px;">{{ item.office_role }}</td>
+                      <td class="p-1 m-0 text-nowrap text-start" style="font-size: 12px; max-width: 100px;">{{ item.pancard_no }}</td>
 
                       {% if item.pancard_file %}
                         <td class="p-1 m-0" style="font-size: 12px;">
@@ -119,13 +119,13 @@
                         <td class="p-1 m-0" style="font-size: 12px;">Null</td>
                       {% endif %}
 
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_reg_address }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_city }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_state }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_pincode }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_email }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_landline }}</td>
-                      <td class="p-1 m-0" style="font-size: 12px;">{{ item.company_Affiliations }}</td>
+                      <td class="p-1 m-0 text-start test-nowrap" style="font-size: 12px;">{{ item.company_reg_address }}</td>
+                      <td class="p-1 m-0 text-start test-nowrap" style="font-size: 12px;">{{ item.company_city }}</td>
+                      <td class="p-1 m-0 text-start test-nowrap" style="font-size: 12px;">{{ item.company_state }}</td>
+                      <td class="p-1 m-0 text-start test-nowrap" style="font-size: 12px;">{{ item.company_pincode }}</td>
+                      <td class="p-1 m-0 text-start test-nowrap" style="font-size: 12px; max-width: 60px">{{ item.company_email }}</td>
+                      <td class="p-1 m-0 text-start test-nowrap" style="font-size: 12px;">{{ item.company_landline }}</td>
+                      <td class="p-1 m-0 text-start test-nowrap" style="font-size: 12px;">{{ item.company_Affiliations }}</td>
                       <td class="p-0 m-0 text-nowrap">
                         <a class="bi bi-eye-fill" style="font-size: 20px;" data-bs-toggle="tooltip" data-bs-placement="top" title="View" href="{% url 'overviewcompanykyc' item.id %}" >  </a>
                         {% if perms.crm.change_companykycdetails %}
@@ -144,10 +144,10 @@
                         {{forloop.counter}}
                       </td>
 
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.company_kyc }}-{{ item.company_branch }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.Constitution }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.office_role }}</td>
-                      <td class="p-1 m-0 text-truncate" style="font-size: 12px; max-width: 100px;">{{ item.pancard_no }}</td>
+                      <td class="p-1 m-0 text-nowrap" style="font-size: 12px; max-width: 100px;">{{ item.company_kyc }}-{{ item.company_branch }}</td>
+                      <td class="p-1 m-0 text-nowrap" style="font-size: 12px; max-width: 100px;">{{ item.Constitution }}</td>
+                      <td class="p-1 m-0 text-nowrap" style="font-size: 12px; max-width: 100px;">{{ item.office_role }}</td>
+                      <td class="p-1 m-0 text-nowrap" style="font-size: 12px; max-width: 100px;">{{ item.pancard_no }}</td>
 
                       {% if item.pancard_file %}
                         <td class="p-1 m-0" style="font-size: 12px;">

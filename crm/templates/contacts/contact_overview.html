@@ -118,7 +118,7 @@
                     <div class="col-lg-3 col-md-4 label">Category of Client</div>
                     <div class="col-lg-9 col-md-8">
                       {% for  cat in cat_client  %}
-                      {{forloop.counter}}.{{ cat }}  | 
+                      {{ cat }} 
                       {% endfor %}
                     </div>
                   </div>
@@ -127,7 +127,7 @@
                     <div class="col-lg-3 col-md-4 label">Focuse Area</div>
                     <div class="col-lg-9 col-md-8">
                       {% for  focus in focus_area  %}
-                      {{forloop.counter}}.{{ focus }} | 
+                      {{ focus }},
                       {% endfor %}
                       </div>
                   </div>

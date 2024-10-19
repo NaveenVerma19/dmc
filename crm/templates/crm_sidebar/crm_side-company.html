@@ -18,7 +18,7 @@
       <li>
         <a href="{% url 'newcomp' %}">
           <i class="bi bi-building-fill-check" style="font-size: 20px;"></i>
-          <span>All New Companies</span>
+          <span>Company Data</span>
         </a>
       </li>
     {% endif %}
@@ -29,20 +29,7 @@
 
     {% if perms.crm.add_companykycdetails %}
       <li>
-        <a href="{% url 'addcompanykyc' %}"><i class="bi bi-file-earmark-plus-fill" style="font-size: 20px;"></i><span>Add KYC</span></a>
-      </li>
-    {% endif %}
-    {% if perms.crm.view_companykycdetails %}
-      <li>
-        <a href="{% url 'allcompanykyc' %}"><i class="bi bi-table" style="font-size: 20px;"></i><span>KYC Done Companies</span></a>
-      </li>
-    {% endif %}
-    {% if perms.crm.view_newcompanyregistration %}
-      <li>
-        <a href="{% url 'newcomp' %}">
-          <i class="bi bi-building-fill-check" style="font-size: 20px;"></i>
-          <span>Pending KYC Companies</span>
-        </a>
+        <a href="{% url 'addcompanykyc' %}"><i class="bi bi-file-earmark-plus-fill" style="font-size: 20px;"></i><span>Add Company KYC</span></a>
       </li>
     {% endif %}
 
